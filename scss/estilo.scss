@@ -10,6 +10,7 @@
     from {
         right: -80px;
     }
+
     to {
         right: 100%;
     }
@@ -18,19 +19,19 @@
 @keyframes move2-animation {
     0% {
         right: 0;
-        top: 250px;
+        top: 350px;
     }
 
     30% {
-        top: 150px;
-    }
-
-    50% {
         top: 250px;
     }
 
+    50% {
+        top: 350px;
+    }
+
     70% {
-        top: 150px;
+        top: 250px;
     }
 
     100% {
@@ -44,6 +45,7 @@
     from {
         right: -400px;
     }
+
     to {
         right: 100%;
     }
@@ -74,25 +76,66 @@
 
 // Estilo do Projeto
 .game {
-    width: 80%;
-    height: 500px;
-    border: solid 1px #333;
+    width: 100%;
+    height: 100vh;
     margin: 0 auto;
     position: relative;
     overflow: hidden;
+    border-bottom: 14px solid rgb(3, 118, 3);
+    background: linear-gradient(rgb(0, 193, 252), #fff);
+
+    .header {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        .wrapper-topo {
+            width: 60%;
+            padding: 20px;
+            margin-top: 40px;
+            background-color: #fff;
+            border: solid 4px rgb(135, 78, 7);
+            box-shadow: 3px 3px rgb(245, 192, 1), 1px 0 0.4em rgb(6, 6, 6);
+            opacity: 80%;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 30px;
+            position: relative;
+
+            .label-topo {
+                display: block;
+
+                .titulo {
+                    display: block;
+                    font-size: 14px;
+                    font-weight: bold;
+                }
+            }
+
+            img {
+                position: absolute;
+                // width: 200px;
+                left: 0;
+                right: 0;
+                top: -40px;
+                margin: auto;
+            }
+        }
+    }
 
     .clouds {
         width: 400px;
         position: absolute;
-        top: 20px;
-        animation: clouds-animation 4.5s infinite linear;
+        top: 150px;
+        animation: clouds-animation 16.5s infinite linear;
     }
 
     .clouds2 {
         width: 400px;
         position: absolute;
-        top: 20px;
-        animation: clouds-animation 4.5s infinite linear 2.3s;
+        top: 250px;
+        animation: clouds-animation 16.5s infinite linear 8.2s;
     }
 
     .pipe {
@@ -100,20 +143,21 @@
         bottom: 0;
         width: 80px;
         // transition: 1s;
-        animation: move-animation 2.5s infinite linear;
+        animation: move-animation 1.5s infinite linear;
     }
 
     .pipe2 {
         position: absolute;
         bottom: 0;
+        // left: -90px;
         width: 90px;
         // transition: 1s;
-        animation: move-animation 2.5s infinite linear 1.3s;
+        animation: move-animation 1.5s infinite linear 2.3s;
     }
 
     .bullet {
         position: absolute;
-        top: 100px;
+        top: 200px;
         width: 90px;
         // transition: 1s;
         animation: move-animation 3.5s infinite linear .7s;
@@ -129,12 +173,16 @@
 
     .mario {
         position: absolute;
-        bottom: 120px;
+        bottom: 0px;
         width: 150px;
     }
-    
+
+    .game-over {
+        width: 80px;
+        left: 50px;
+    }
+
     .pulo {
         animation: pulo-animation .5s ease-out;
     }
 }
-
