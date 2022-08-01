@@ -1,8 +1,15 @@
+// Importações
+@font-face {
+    font-family: 'mario';
+    src: url('../fonts/SuperMario256.ttf');
+}
+
 // Definições Gerais
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'mario';
 }
 
 // Animações
@@ -16,27 +23,37 @@
     }
 }
 
-@keyframes move2-animation {
+@keyframes bullet-animation {
+    from {
+        right: -80px;
+    }
+
+    to {
+        right: 100%;
+    }
+}
+
+@keyframes bullet2-animation {
     0% {
         right: 0;
-        top: 350px;
+        top: 65%;
     }
 
     30% {
-        top: 250px;
+        top: 50%;
     }
 
     50% {
-        top: 350px;
+        top: 65%;
     }
 
     70% {
-        top: 250px;
+        top: 70%;
     }
 
     100% {
         right: 100%;
-        top: 50px;
+        top: 40%;
 
     }
 }
@@ -75,7 +92,7 @@
 }
 
 // Estilo do Projeto
-.game {
+.cenario {
     width: 100%;
     height: 100vh;
     margin: 0 auto;
@@ -84,6 +101,44 @@
     border-bottom: 14px solid rgb(3, 118, 3);
     background: linear-gradient(rgb(0, 193, 252), #fff);
 
+    &.start {
+        .clouds {
+            animation: clouds-animation 20.5s infinite linear;
+        }
+
+        .clouds2 {
+            animation: clouds-animation 20.5s infinite linear 10.2s;
+        }
+
+        .pipe {
+            animation: move-animation 1.5s infinite linear;
+        }
+
+        .pipe2 {
+            animation: move-animation 1.5s infinite linear 2.3s;
+        }
+
+        .bullet {
+            animation: bullet-animation 3.5s infinite linear .7s;
+        }
+    
+        .bullet2 {
+            animation: bullet2-animation 3s infinite linear .7s;
+        }
+
+        .moeda {
+            animation: move-animation 3s infinite linear;
+        }
+
+        .moeda2 {
+            animation: move-animation 3s infinite linear .5s;
+        }
+    
+        .moeda3 {
+            animation: move-animation 3s infinite linear 1s;
+        }
+    }
+
     .header {
         width: 100%;
         display: flex;
@@ -91,13 +146,14 @@
 
         .wrapper-topo {
             width: 60%;
+            max-width: 650px;
             padding: 20px;
             margin-top: 40px;
             background-color: #fff;
-            border: solid 4px rgb(135, 78, 7);
-            box-shadow: 3px 3px rgb(245, 192, 1), 1px 0 0.4em rgb(6, 6, 6);
+            border: solid 4px rgb(0, 140, 255);
+            box-shadow: 3px 3px rgb(245, 221, 1), 1px 0 0.4em rgb(6, 6, 6);
             opacity: 80%;
-            border-radius: 10px;
+            // border-radius: 10px;
             display: flex;
             justify-content: space-between;
             font-size: 30px;
@@ -105,11 +161,17 @@
 
             .label-topo {
                 display: block;
+                text-align: center;
 
                 .titulo {
                     display: block;
                     font-size: 14px;
                     font-weight: bold;
+                    color: rgb(11, 50, 147);
+                }
+
+                .txt {
+                    color: rgb(11, 162, 34);
                 }
             }
 
@@ -121,6 +183,11 @@
                 top: -40px;
                 margin: auto;
             }
+
+            .controle {
+                display: flex;
+                gap: 60px;
+            }
         }
     }
 
@@ -128,53 +195,54 @@
         width: 400px;
         position: absolute;
         top: 150px;
-        animation: clouds-animation 16.5s infinite linear;
     }
 
     .clouds2 {
         width: 400px;
         position: absolute;
         top: 250px;
-        animation: clouds-animation 16.5s infinite linear 8.2s;
+        right: -400px;
     }
 
     .pipe {
         position: absolute;
         bottom: 0;
         width: 80px;
-        // transition: 1s;
-        animation: move-animation 1.5s infinite linear;
     }
 
     .pipe2 {
         position: absolute;
         bottom: 0;
-        // left: -90px;
+        right: -90px;
         width: 90px;
-        // transition: 1s;
-        animation: move-animation 1.5s infinite linear 2.3s;
     }
 
     .bullet {
         position: absolute;
-        top: 200px;
+        top: 50%;
         width: 90px;
-        // transition: 1s;
-        animation: move-animation 3.5s infinite linear .7s;
+        right: -90px;
     }
 
     .bullet2 {
         position: absolute;
-        top: 420px;
+        top: 50%;
         width: 90px;
-        // transition: 1s;
-        animation: move2-animation 3s infinite linear .7s;
+        right: -90px;
     }
 
     .mario {
         position: absolute;
         bottom: 0px;
+        // bottom: 200px;
         width: 150px;
+    }
+
+    .moeda {
+        position: absolute;
+        bottom: 250px;
+        right: -80px;
+        // left: 100px;
     }
 
     .game-over {
@@ -184,5 +252,107 @@
 
     .pulo {
         animation: pulo-animation .5s ease-out;
+    }
+}
+
+.modal {
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0,0,0, .80);
+    z-index: 100;
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.desabilitar {
+        display: none;
+    }
+
+    .modal-start {
+        width: 650px;
+        height: 400px;
+        // background-color: #fff;
+        background-image: url('../images/background.jpg');
+        background-position: top center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        box-shadow: 2px 2px 20px rgb(251, 243, 2);
+        padding: 50px;
+        border-radius: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .titulo {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .input-jogador {
+            width: 300px;
+            height: 40px;
+            border: solid 3px #005dfd;
+            border-radius: 30px;
+            padding: 15px;
+            font-size: 18px;
+            outline: none;
+        }
+    }
+
+    .btn-start {
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-red-tr {
+        min-width: 130px;
+        width: 300px;
+        height: 70px;
+        position: relative;
+        display: flex;
+        justify-items: center;
+        align-items: center;
+        background-color: #e74c3c;
+        text-align: center;
+        text-transform: uppercase; 
+        cursor: pointer;
+        padding: 15px;
+        margin: 30px 25px;
+    
+        font-size: 36px;
+        font-weight: 600;
+    
+        color: #fff;
+    
+        transition: 0.5s;
+
+        &::before {
+            position: absolute;
+            content:"";
+            border-top: 5px solid lighten(#e74c3c, 5%);
+            border-left: 5px solid lighten(#e74c3c, 5%);	
+            border-right: 5px solid darken(#e74c3c, 5%);
+            border-bottom: 5px solid darken(#e74c3c, 5%);
+        
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;	
+            
+            transition: 0.5s;
+        }
+
+        &:hover {
+            box-shadow: 7px 7px darken(#e74c3c, 20%), -7px -7px lighten(#e74c3c, 20%);
+            cursor: pointer;
+                &::before {
+                border: 0px ;
+            }
+        }
     }
 }

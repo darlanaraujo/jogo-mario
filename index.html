@@ -14,28 +14,48 @@
     <title>Jogo do Mário</title>
 </head>
 <body>
-    <main class="game">
+    <main class="cenario" id="cenario">
         <header class="header">
             <div class="wrapper-topo">
                 <label class="label-topo">
                     <span class="titulo">Jogador:</span>
-                    <span class="jogador">Nome</span>
+                    <span class="jogador txt" id="txtJogador">Nome</span>
                 </label>
-                <img src="images/logo.png" alt="">
-                <label class="label-topo">
-                    <span class="titulo">Tempo:</span>
-                    <span class="time">00</span>
-                </label>
+                <img src="images/logo.png">
+
+                <div class="controle">
+                    <label class="label-topo">
+                        <span class="titulo">pontos:</span>
+                        <span class="pontos txt" id="txtPontos">00</span>
+                    </label>
+
+                    <label class="label-topo">
+                        <span class="titulo">Tempo:</span>
+                        <span class="tempo txt" id="txtTempo">00</span>
+                    </label>
+                </div>
+                
             </div>
             
         </header>
-        <img class="clouds" src="images/clouds.png" alt="">
-        <img class="clouds2" src="images/clouds.png" alt="">
-        <img class="pipe" id="pipe" src="images/pipe.png" alt="">
-        <img class="pipe2" id="pipe2" src="images/pipe.png" alt="">
-        <img class="bullet" id="bullet" src="images/bullet.png" alt="">
-        <img class="bullet2" id="bullet2" src="images/bullet.png" alt="">
-        <img class="mario" id="mario" src="images/mario.gif" alt="">
+        <img class="clouds" src="images/clouds.png">
+        <img class="clouds2" src="images/clouds.png">
+        <img class="pipe" id="pipe" src="images/pipe.png">
+        <img class="pipe2" id="pipe2" src="images/pipe.png">
+        <img class="bullet" id="bullet" src="images/bullet.png">
+        <img class="bullet2" id="bullet2" src="images/bullet.png">
+        <img src="images/moeda.png" class="moeda moeda1" id="moeda">
+        <img src="images/moeda.png" class="moeda moeda2" id="moeda">
+        <img src="images/moeda.png" class="moeda moeda3" id="moeda">
+        <img class="mario" id="mario" src="images/mario.gif">
     </main>
+    
+    <section class="modal" id="modal">
+        <label class="modal-start">
+            <h1 class="titulo">Pronto para um novo desafio?</h1>
+            <input type="text" class="input-jogador" id="inputJogador" placeholder="Jogador...">
+            <button class="btn-start btn-red-tr" id="btnStart">Iniciar Jogo!</button>
+        </label>
+    </section>
 </body>
 </html>

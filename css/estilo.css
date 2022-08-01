@@ -1,7 +1,13 @@
+@font-face {
+  font-family: 'mario';
+  src: url("../fonts/SuperMario256.ttf");
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'mario';
 }
 
 @keyframes move-animation {
@@ -13,23 +19,32 @@
   }
 }
 
-@keyframes move2-animation {
+@keyframes bullet-animation {
+  from {
+    right: -80px;
+  }
+  to {
+    right: 100%;
+  }
+}
+
+@keyframes bullet2-animation {
   0% {
     right: 0;
-    top: 350px;
+    top: 65%;
   }
   30% {
-    top: 250px;
+    top: 50%;
   }
   50% {
-    top: 350px;
+    top: 65%;
   }
   70% {
-    top: 250px;
+    top: 70%;
   }
   100% {
     right: 100%;
-    top: 50px;
+    top: 40%;
   }
 }
 
@@ -60,7 +75,7 @@
   }
 }
 
-.game {
+.cenario {
   width: 100%;
   height: 100vh;
   margin: 0 auto;
@@ -70,38 +85,80 @@
   background: linear-gradient(#00c1fc, #fff);
 }
 
-.game .header {
+.cenario.start .clouds {
+  animation: clouds-animation 20.5s infinite linear;
+}
+
+.cenario.start .clouds2 {
+  animation: clouds-animation 20.5s infinite linear 10.2s;
+}
+
+.cenario.start .pipe {
+  animation: move-animation 1.5s infinite linear;
+}
+
+.cenario.start .pipe2 {
+  animation: move-animation 1.5s infinite linear 2.3s;
+}
+
+.cenario.start .bullet {
+  animation: bullet-animation 3.5s infinite linear .7s;
+}
+
+.cenario.start .bullet2 {
+  animation: bullet2-animation 3s infinite linear .7s;
+}
+
+.cenario.start .moeda {
+  animation: move-animation 3s infinite linear;
+}
+
+.cenario.start .moeda2 {
+  animation: move-animation 3s infinite linear .5s;
+}
+
+.cenario.start .moeda3 {
+  animation: move-animation 3s infinite linear 1s;
+}
+
+.cenario .header {
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
-.game .header .wrapper-topo {
+.cenario .header .wrapper-topo {
   width: 60%;
+  max-width: 650px;
   padding: 20px;
   margin-top: 40px;
   background-color: #fff;
-  border: solid 4px #874e07;
-  box-shadow: 3px 3px #f5c001, 1px 0 0.4em #060606;
+  border: solid 4px #008cff;
+  box-shadow: 3px 3px #f5dd01, 1px 0 0.4em #060606;
   opacity: 80%;
-  border-radius: 10px;
   display: flex;
   justify-content: space-between;
   font-size: 30px;
   position: relative;
 }
 
-.game .header .wrapper-topo .label-topo {
+.cenario .header .wrapper-topo .label-topo {
   display: block;
+  text-align: center;
 }
 
-.game .header .wrapper-topo .label-topo .titulo {
+.cenario .header .wrapper-topo .label-topo .titulo {
   display: block;
   font-size: 14px;
   font-weight: bold;
+  color: #0b3293;
 }
 
-.game .header .wrapper-topo img {
+.cenario .header .wrapper-topo .label-topo .txt {
+  color: #0ba222;
+}
+
+.cenario .header .wrapper-topo img {
   position: absolute;
   left: 0;
   right: 0;
@@ -109,59 +166,165 @@
   margin: auto;
 }
 
-.game .clouds {
+.cenario .header .wrapper-topo .controle {
+  display: flex;
+  gap: 60px;
+}
+
+.cenario .clouds {
   width: 400px;
   position: absolute;
   top: 150px;
-  animation: clouds-animation 16.5s infinite linear;
 }
 
-.game .clouds2 {
+.cenario .clouds2 {
   width: 400px;
   position: absolute;
   top: 250px;
-  animation: clouds-animation 16.5s infinite linear 8.2s;
+  right: -400px;
 }
 
-.game .pipe {
+.cenario .pipe {
   position: absolute;
   bottom: 0;
   width: 80px;
-  animation: move-animation 1.5s infinite linear;
 }
 
-.game .pipe2 {
+.cenario .pipe2 {
   position: absolute;
   bottom: 0;
+  right: -90px;
   width: 90px;
-  animation: move-animation 1.5s infinite linear 2.3s;
 }
 
-.game .bullet {
+.cenario .bullet {
   position: absolute;
-  top: 200px;
+  top: 50%;
   width: 90px;
-  animation: move-animation 3.5s infinite linear .7s;
+  right: -90px;
 }
 
-.game .bullet2 {
+.cenario .bullet2 {
   position: absolute;
-  top: 420px;
+  top: 50%;
   width: 90px;
-  animation: move2-animation 3s infinite linear .7s;
+  right: -90px;
 }
 
-.game .mario {
+.cenario .mario {
   position: absolute;
   bottom: 0px;
   width: 150px;
 }
 
-.game .game-over {
+.cenario .moeda {
+  position: absolute;
+  bottom: 250px;
+  right: -80px;
+}
+
+.cenario .game-over {
   width: 80px;
   left: 50px;
 }
 
-.game .pulo {
+.cenario .pulo {
   animation: pulo-animation .5s ease-out;
+}
+
+.modal {
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.desabilitar {
+  display: none;
+}
+
+.modal .modal-start {
+  width: 650px;
+  height: 400px;
+  background-image: url("../images/background.jpg");
+  background-position: top center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  box-shadow: 2px 2px 20px #fbf302;
+  padding: 50px;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal .modal-start .titulo {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.modal .modal-start .input-jogador {
+  width: 300px;
+  height: 40px;
+  border: solid 3px #005dfd;
+  border-radius: 30px;
+  padding: 15px;
+  font-size: 18px;
+  outline: none;
+}
+
+.modal .btn-start {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.modal .btn-red-tr {
+  min-width: 130px;
+  width: 300px;
+  height: 70px;
+  position: relative;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  background-color: #e74c3c;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 15px;
+  margin: 30px 25px;
+  font-size: 36px;
+  font-weight: 600;
+  color: #fff;
+  transition: 0.5s;
+}
+
+.modal .btn-red-tr::before {
+  position: absolute;
+  content: "";
+  border-top: 5px solid #ea6153;
+  border-left: 5px solid #ea6153;
+  border-right: 5px solid #e43725;
+  border-bottom: 5px solid #e43725;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  transition: 0.5s;
+}
+
+.modal .btn-red-tr:hover {
+  box-shadow: 7px 7px #a82315, -7px -7px #f29f97;
+  cursor: pointer;
+}
+
+.modal .btn-red-tr:hover::before {
+  border: 0px;
 }
