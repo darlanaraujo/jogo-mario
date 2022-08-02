@@ -10,6 +10,17 @@
   font-family: 'mario';
 }
 
+@keyframes fade-up {
+  from {
+    transform: translate(0px, -200px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(0px, 0px);
+    opacity: 1;
+  }
+}
+
 @keyframes move-animation {
   from {
     right: -80px;
@@ -128,8 +139,7 @@
 }
 
 .cenario .header .wrapper-topo {
-  width: 60%;
-  max-width: 650px;
+  width: 650px;
   padding: 20px;
   margin-top: 40px;
   background-color: #fff;
@@ -258,55 +268,140 @@
   box-shadow: 2px 2px 20px #fbf302;
   padding: 50px;
   border-radius: 30px;
+  display: none;
+}
+
+.modal .modal-start.active {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  animation: fade-up 1s forwards;
 }
 
 .modal .modal-start .titulo {
   font-size: 36px;
   text-align: center;
-  margin-bottom: 30px;
+  margin: 20px 0px;
+  color: #0da831;
+  -webkit-text-stroke: 3px black;
 }
 
 .modal .modal-start .input-jogador {
   width: 300px;
-  height: 40px;
+  height: 50px;
   border: solid 3px #005dfd;
-  border-radius: 30px;
+  border-radius: 10px;
   padding: 15px;
   font-size: 18px;
   outline: none;
 }
 
-.modal .btn-start {
-  background: none;
-  border: none;
-  cursor: pointer;
+.modal .modal-game-over {
+  width: 650px;
+  height: 500px;
+  background-image: linear-gradient(red, #480303);
+  background-position: top center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  box-shadow: 2px 2px 20px #fb0202;
+  padding: 50px;
+  border-radius: 30px;
+  display: none;
 }
 
-.modal .btn-red-tr {
-  min-width: 130px;
+.modal .modal-game-over.active {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: fade-up 1s forwards;
+}
+
+.modal .modal-game-over .titulo {
+  font-size: 36px;
+  text-align: center;
+  margin: 20px 0px;
+  color: #0da831;
+  -webkit-text-stroke: 3px black;
+}
+
+.modal .modal-game-over .img-game-over {
+  width: 300px;
+}
+
+.modal .modal-game-over .wrapper-btn {
+  display: flex;
+  gap: 30px;
+}
+
+.modal .modal-ranking {
+  width: 650px;
+  min-height: 500px;
+  max-height: 85%;
+  background-image: linear-gradient(#0091ff, #e2e2e2);
+  background-position: top center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  box-shadow: 2px 2px 20px #02b4fb;
+  padding: 50px;
+  border-radius: 30px;
+  display: none;
+}
+
+.modal .modal-ranking.active {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: fade-up 1s forwards;
+}
+
+.modal .modal-ranking .titulo {
+  font-size: 36px;
+  text-align: center;
+  margin: 20px 0px;
+  color: #0da831;
+  -webkit-text-stroke: 3px black;
+}
+
+.modal .modal-ranking .tabela-ranking {
+  text-align: center;
+  color: white;
+  -webkit-text-stroke: 2px black;
+  border-radius: 10px;
+}
+
+.modal .modal-ranking .tabela-ranking td {
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.modal .btn-modal {
+  background: none;
+  border: none;
   width: 300px;
   height: 70px;
   position: relative;
   display: flex;
-  justify-items: center;
-  align-items: center;
-  background-color: #e74c3c;
-  text-align: center;
+  justify-content: center;
+  align-content: flex-end;
+  background-color: #bd827c;
   text-transform: uppercase;
-  cursor: pointer;
   padding: 15px;
-  margin: 30px 25px;
-  font-size: 36px;
+  margin: 30px 0px;
+  font-size: 34px;
   font-weight: 600;
   color: #fff;
-  transition: 0.5s;
+  transition: 1s;
 }
 
-.modal .btn-red-tr::before {
+.modal .btn-red-tr:not(:disabled) {
+  cursor: pointer;
+  background-color: #e74c3c;
+}
+
+.modal .btn-red-tr:not(:disabled)::before {
   position: absolute;
   content: "";
   border-top: 5px solid #ea6153;
@@ -320,11 +415,16 @@
   transition: 0.5s;
 }
 
-.modal .btn-red-tr:hover {
+.modal .btn-red-tr:not(:disabled):hover {
   box-shadow: 7px 7px #a82315, -7px -7px #f29f97;
-  cursor: pointer;
 }
 
-.modal .btn-red-tr:hover::before {
+.modal .btn-red-tr:not(:disabled):hover::before {
   border: 0px;
+}
+
+.modal .btn-reiniciar, .modal .btn-ranking {
+  width: 200px;
+  height: 50px;
+  font-size: 25px;
 }

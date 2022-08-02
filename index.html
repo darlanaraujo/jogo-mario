@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,8 +12,12 @@
     <!-- Script -->
     <script src="js/index.js" defer></script>
 
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+
     <title>Jogo do Mário</title>
 </head>
+
 <body>
     <main class="cenario" id="cenario">
         <header class="header">
@@ -25,7 +30,7 @@
 
                 <div class="controle">
                     <label class="label-topo">
-                        <span class="titulo">pontos:</span>
+                        <span class="titulo">moedas:</span>
                         <span class="pontos txt" id="txtPontos">00</span>
                     </label>
 
@@ -34,9 +39,9 @@
                         <span class="tempo txt" id="txtTempo">00</span>
                     </label>
                 </div>
-                
+
             </div>
-            
+
         </header>
         <img class="clouds" src="images/clouds.png">
         <img class="clouds2" src="images/clouds.png">
@@ -49,13 +54,46 @@
         <img src="images/moeda.png" class="moeda moeda3" id="moeda">
         <img class="mario" id="mario" src="images/mario.gif">
     </main>
-    
+
     <section class="modal" id="modal">
-        <label class="modal-start">
+        <div class="modal-start " id="modalStart">
             <h1 class="titulo">Pronto para um novo desafio?</h1>
             <input type="text" class="input-jogador" id="inputJogador" placeholder="Jogador...">
-            <button class="btn-start btn-red-tr" id="btnStart">Iniciar Jogo!</button>
-        </label>
+            <button class="btn-modal btn-red-tr btn-start" id="btnStart" disabled>Iniciar Jogo!</button>
+        </div>
+
+        <div class="modal-game-over active" id="modalGameOver">
+            <h1 class="titulo">Que pena, voce perdeu!</h1>
+            <img src="images/game-over.gif" class="img-game-over">
+            <div class="wrapper-btn">
+                <button class="btn-modal btn-red-tr btn-ranking" id="btnRanking">Ranking</button>
+                <button class="btn-modal btn-red-tr btn-reiniciar" id="btnReiniciar">Reiniciar</button>
+            </div>
+            
+        </div>
+
+        <div class="modal-ranking" id="modalRanking">
+            <h1 class="titulo">Ranking</h1>
+            <table class="tabela-ranking" border="1">
+                <tr class="cabecalho">
+                    <td>Posicao</td>
+                    <td>Jogador</td>
+                    <td>Moedas</td>
+                    <td>Tempo</td>
+                    <td>Pontuacao</td>
+                </tr>
+                <tr class="dados">
+                    <td>1</td>
+                    <td>Darlan</td>
+                    <td>20</td>
+                    <td>30</td>
+                    <td>70</td>
+                </tr>
+                
+            </table>
+            <button class="btn-modal btn-red-tr btn-reiniciar" id="btnReiniciar">Reiniciar</button>
+        </div>
     </section>
 </body>
+
 </html>

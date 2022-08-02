@@ -1,6 +1,11 @@
 // Elementos do jogo ======================================
 const btnStart = document.querySelector('#btnStart');
+const btnRanking = document.querySelector('#btnRanking');
+const btnReiniciar = document.querySelector('#btnReiniciar');
 const modal = document.querySelector('#modal');
+const modalStart = document.querySelector('#modalStart');
+const modalGameOver = document.querySelector('#modalGameOver');
+const modalRanking = document.querySelector('#modalRanking');
 const cenario = document.querySelector('#cenario');
 const mario = document.querySelector('#mario');
 const pipe = document.querySelector('#pipe');
@@ -16,12 +21,17 @@ const txtTempo = document.querySelector('#txtTempo');
 // Variáveis globais
 let nomeJogador;
 let pontuacaoJogador = 0;
-let tempoJogador;
-let teste = 'darlan';
+let tempoJogador = 0;
 
+// Função que cria um banco temporário que recebe o banco do LocalStorage, ele recebe os dados do jogador como parametro depois passa esses dados em um array para o banco na rede.
 const bancoTemp = (nome, pontuacao, tempo) => {
-    dados = {nomeJogador: nome, pontuacaoJogador: pontuacao, tempoJogador: tempo};
-    return JSON.stringify(dados);
+    let banco = getBanco();
+    
+    dados = { nomeJogador: nome, pontuacaoJogador: pontuacao, tempoJogador: tempo };
+
+    banco.unshift(dados);
+
+    setBanco(JSON.stringify(banco));
 }
 
 // BD LocalStore
@@ -29,25 +39,60 @@ const setBanco = (banco) => {
     localStorage.setItem('bd-mario', banco);
 }
 
+const getBanco = () => {
+    return JSON.parse(localStorage.getItem('bd-mario')) ?? [];
+}
+
 // Funções ================================================
 
+// Função que inicia o jogo;
 const start = () => {
     modal.classList.add('desabilitar');
+    modalStart.classList.remove('active');
     cenario.classList.add('start');
-    
-    nomeJogador = inputJogador.value.toUpperCase(); // Pego o nome do jogador;
+    txtJogador.innerHTML = nomeJogador;
 
-    time(true);
+    // Inicia a contagem do tempo.
+    time();
+
+    limpaTexto();
 
     // Eventos
     document.addEventListener('keydown', pulo);
 };
 
-btnStart.addEventListener('click', start);
+// Função que valida se o jogador preencheu o nome com pelo menos 3 caracteres;
+const validaJogador = ({ target }) => {
+
+    if (target.value.length > 2) {
+        btnStart.removeAttribute('disabled')
+
+        // Acesso pelo click do mouse
+        btnStart.addEventListener('click', start);
+        
+        // Acesso pelo enter do teclado
+        window.addEventListener('keypress', ( {key} ) => {
+            if(key === 'Enter') {
+                start();
+            }
+        })
+
+        nomeJogador =  target.value.trim().toUpperCase();
+        
+    } else {
+        btnStart.setAttribute('disabled', '');
+    }
+};
+
+inputJogador.addEventListener('input', validaJogador);
+
+const limpaTexto = () => {
+    inputJogador.value = '';
+};
 
 // Função que faz o Mario pular;
 const pulo = (event) => {
-    if(event.key === ' ' || event.key === 'ArrowUp') {
+    if (event.key === ' ' || event.key === 'ArrowUp') {
         mario.classList.add('pulo');
 
         setTimeout(() => {
@@ -63,7 +108,7 @@ const loop = setInterval(() => {
     const pipePosition2 = pipe2.offsetLeft;
     const marioPosition = +window.getComputedStyle(mario).bottom.replace('px', '');
 
-    if(pipePosition <= 120 && pipePosition > 0 && marioPosition <120 || pipePosition2 <= 120 && pipePosition2 > 0 && marioPosition <120) {
+    if (pipePosition <= 120 && pipePosition > 0 && marioPosition < 120 || pipePosition2 <= 120 && pipePosition2 > 0 && marioPosition < 120) {
         // Pipe 1
         pipe.style.animation = 'none';
         pipe.style.left = `${pipePosition}px`;
@@ -76,50 +121,59 @@ const loop = setInterval(() => {
         mario.style.animation = 'none';
         mario.style.bottom = `${marioPosition}px`
 
+        // Muda a imagem e estilo;
         mario.src = 'images/game-over.png'
         mario.classList.add('game-over');
 
-        // Encerra o loop;
+        // Encerra o loop, pontuação e tempo do jogo;
         clearInterval(loop);
         clearInterval(pontuacao);
+        clearInterval(this.loopTime);
 
-        time(false);
+        // Salvando no BD
+        bancoTemp(nomeJogador, pontuacaoJogador, tempoJogador);
+
+        // Mostra a tela de game over;
+        modal.classList.remove('desabilitar');
+        modalGameOver.classList.add('active');
     }
-
-
 }, 10);
 
+// Função que reinicia a partida;
+const reiniciar = () => {
+    // modalStart.classList.add('active');
+    // modalGameOver.classList.remove('active');
+    location. reload();
+};
+btnRanking.addEventListener('click', reiniciar);
+
 // Função que conta o tempo do jogo;
-const time = (status) => {
-    setInterval(() => {
+const time = () => {
+    this.loopTime = setInterval(() => {
         const tempoAtual = +txtTempo.innerHTML;
-        if(status) {
-            txtTempo.innerHTML = tempoAtual +1;
-        } else {
-            tempoJogador = tempoAtual;
-        }
+        tempoJogador = tempoAtual + 1;
+        txtTempo.innerHTML = tempoJogador;
     }, 1000);
+
 }
 
-
+// Função que conta os pontos do jogador
 const pontuacao = setInterval(() => {
     const marioPosition = +window.getComputedStyle(mario).bottom.replace('px', '');
-    
+
     moedas.forEach((moeda, index) => {
         const moedaPosition = moeda.offsetLeft;
-        
+
         if (moedaPosition <= 150 && marioPosition >= 150) {
             console.log(`pegou a moeda no index ${index}`);
-            pontuacaoJogador ++;
+            pontuacaoJogador++;
             txtPontos.innerHTML = pontuacaoJogador;
-            
+
             moeda.style.display = 'none'; // apaga a moeda
 
-            setInterval(() =>{
+            setInterval(() => {
                 moeda.style.display = 'block'; // mostra a moeda novamente depois de 50ms
             }, 50);
-
-            
         }
     });
 

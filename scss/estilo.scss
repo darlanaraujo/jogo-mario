@@ -13,6 +13,18 @@
 }
 
 // Animações
+@keyframes fade-up {
+    from {
+        transform: translate(0px, -200px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translate(0px, 0px);
+        opacity: 1;
+    }
+}
+
 @keyframes move-animation {
     from {
         right: -80px;
@@ -121,7 +133,7 @@
         .bullet {
             animation: bullet-animation 3.5s infinite linear .7s;
         }
-    
+
         .bullet2 {
             animation: bullet2-animation 3s infinite linear .7s;
         }
@@ -133,7 +145,7 @@
         .moeda2 {
             animation: move-animation 3s infinite linear .5s;
         }
-    
+
         .moeda3 {
             animation: move-animation 3s infinite linear 1s;
         }
@@ -145,8 +157,7 @@
         justify-content: center;
 
         .wrapper-topo {
-            width: 60%;
-            max-width: 650px;
+            width: 650px;
             padding: 20px;
             margin-top: 40px;
             background-color: #fff;
@@ -258,7 +269,7 @@
 .modal {
     width: 100%;
     height: 100vh;
-    background-color: rgba(0,0,0, .80);
+    background-color: rgba(0, 0, 0, .80);
     z-index: 100;
     position: absolute;
     top: 0;
@@ -281,78 +292,172 @@
         box-shadow: 2px 2px 20px rgb(251, 243, 2);
         padding: 50px;
         border-radius: 30px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        display: none;
+
+        &.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fade-up 1s forwards;
+        }
 
         .titulo {
             font-size: 36px;
             text-align: center;
-            margin-bottom: 30px;
+            margin: 20px 0px;
+            color: rgb(13, 168, 49);
+            -webkit-text-stroke: 3px black;
         }
 
         .input-jogador {
             width: 300px;
-            height: 40px;
+            height: 50px;
             border: solid 3px #005dfd;
-            border-radius: 30px;
+            border-radius: 10px;
             padding: 15px;
             font-size: 18px;
             outline: none;
         }
     }
 
-    .btn-start {
-        background: none;
-        border: none;
-        cursor: pointer;
+    .modal-game-over {
+        width: 650px;
+        height: 500px;
+        background-image: linear-gradient(rgb(255, 0, 0), rgb(72, 3, 3));
+        // background-image: url('../images/background.jpg');
+        background-position: top center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        box-shadow: 2px 2px 20px rgb(251, 2, 2);
+        padding: 50px;
+        border-radius: 30px;
+        display: none;
+
+        &.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fade-up 1s forwards;
+        }
+
+        .titulo {
+            font-size: 36px;
+            text-align: center;
+            margin: 20px 0px;
+            color: rgb(13, 168, 49);
+            -webkit-text-stroke: 3px black;
+        }
+
+        .img-game-over {
+            width: 300px;
+        }
+
+        .wrapper-btn {
+            display: flex;
+            gap: 30px;
+        }
     }
 
-    .btn-red-tr {
-        min-width: 130px;
+    .modal-ranking {
+        width: 650px;
+        min-height: 500px;
+        max-height: 85%;
+        background-image: linear-gradient(rgb(0, 145, 255), rgb(226, 226, 226));
+        // background-image: url('../images/background.jpg');
+        background-position: top center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        box-shadow: 2px 2px 20px rgb(2, 180, 251);
+        padding: 50px;
+        border-radius: 30px;
+        display: none;
+
+        &.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fade-up 1s forwards;
+        }
+
+        .titulo {
+            font-size: 36px;
+            text-align: center;
+            margin: 20px 0px;
+            color: rgb(13, 168, 49);
+            -webkit-text-stroke: 3px black;
+        }
+
+        .tabela-ranking {
+            text-align: center;
+            color: white;
+            -webkit-text-stroke: 2px black;
+            border-radius: 10px;
+            
+            & td {
+                padding: 5px;
+                border-radius: 5px;
+            }
+        }
+    }
+
+    .btn-modal {
+        background: none;
+        border: none;
         width: 300px;
         height: 70px;
         position: relative;
         display: flex;
-        justify-items: center;
-        align-items: center;
-        background-color: #e74c3c;
-        text-align: center;
-        text-transform: uppercase; 
-        cursor: pointer;
+        justify-content: center;
+        align-content: flex-end;
+        background-color: #bd827c;
+        text-transform: uppercase;
         padding: 15px;
-        margin: 30px 25px;
-    
-        font-size: 36px;
+        margin: 30px 0px;
+
+        font-size: 34px;
         font-weight: 600;
-    
+
         color: #fff;
-    
-        transition: 0.5s;
+
+        transition: 1s;
+    }
+
+    .btn-red-tr:not(:disabled) {
+        cursor: pointer;
+        background-color: #e74c3c;
 
         &::before {
             position: absolute;
-            content:"";
+            content: "";
             border-top: 5px solid lighten(#e74c3c, 5%);
-            border-left: 5px solid lighten(#e74c3c, 5%);	
+            border-left: 5px solid lighten(#e74c3c, 5%);
             border-right: 5px solid darken(#e74c3c, 5%);
             border-bottom: 5px solid darken(#e74c3c, 5%);
-        
+
             top: 0px;
             right: 0px;
             bottom: 0px;
-            left: 0px;	
-            
+            left: 0px;
+
             transition: 0.5s;
         }
 
         &:hover {
             box-shadow: 7px 7px darken(#e74c3c, 20%), -7px -7px lighten(#e74c3c, 20%);
-            cursor: pointer;
-                &::before {
-                border: 0px ;
+
+            &::before {
+                border: 0px;
             }
         }
     }
+
+    .btn-reiniciar, .btn-ranking {
+        width: 200px;
+        height: 50px;
+        font-size: 25px;
+    }
+
 }
