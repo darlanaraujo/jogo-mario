@@ -4,6 +4,12 @@
     src: url('../fonts/SuperMario256.ttf');
 }
 
+// Variáveis
+$corAzul: #0097d3;
+$corAmarela: #ffc900;
+$corVermelha: #ff201c;
+$corVerde: #00ae33;
+
 // Definições Gerais
 * {
     margin: 0;
@@ -110,8 +116,8 @@
     margin: 0 auto;
     position: relative;
     overflow: hidden;
-    border-bottom: 14px solid rgb(3, 118, 3);
-    background: linear-gradient(rgb(0, 193, 252), #fff);
+    border-bottom: 14px solid $corVerde;
+    background: linear-gradient($corAzul, white);
 
     &.start {
         .clouds {
@@ -161,8 +167,8 @@
             padding: 20px;
             margin-top: 40px;
             background-color: #fff;
-            border: solid 4px rgb(0, 140, 255);
-            box-shadow: 3px 3px rgb(245, 221, 1), 1px 0 0.4em rgb(6, 6, 6);
+            border: solid 4px $corAzul;
+            box-shadow: 3px 3px $corAmarela, 1px 0 0.4em rgb(6, 6, 6);
             opacity: 80%;
             // border-radius: 10px;
             display: flex;
@@ -178,11 +184,11 @@
                     display: block;
                     font-size: 14px;
                     font-weight: bold;
-                    color: rgb(11, 50, 147);
+                    color: $corAzul;
                 }
 
                 .txt {
-                    color: rgb(11, 162, 34);
+                    color: $corVerde;
                 }
             }
 
@@ -289,7 +295,7 @@
         background-position: top center;
         background-size: cover;
         background-repeat: no-repeat;
-        box-shadow: 2px 2px 20px rgb(251, 243, 2);
+        box-shadow: 2px 2px 20px $corAmarela;
         padding: 50px;
         border-radius: 30px;
         display: none;
@@ -306,14 +312,14 @@
             font-size: 36px;
             text-align: center;
             margin: 20px 0px;
-            color: rgb(13, 168, 49);
+            color: $corVerde;
             -webkit-text-stroke: 3px black;
         }
 
         .input-jogador {
             width: 300px;
             height: 50px;
-            border: solid 3px #005dfd;
+            border: solid 3px $corAzul;
             border-radius: 10px;
             padding: 15px;
             font-size: 18px;
@@ -324,11 +330,7 @@
     .modal-game-over {
         width: 650px;
         height: 500px;
-        background-image: linear-gradient(rgb(255, 0, 0), rgb(72, 3, 3));
-        // background-image: url('../images/background.jpg');
-        background-position: top center;
-        background-size: cover;
-        background-repeat: no-repeat;
+        background-image: linear-gradient($corAzul, rgb(231, 231, 231));
         box-shadow: 2px 2px 20px rgb(251, 2, 2);
         padding: 50px;
         border-radius: 30px;
@@ -346,7 +348,7 @@
             font-size: 36px;
             text-align: center;
             margin: 20px 0px;
-            color: rgb(13, 168, 49);
+            color: $corVermelha;
             -webkit-text-stroke: 3px black;
         }
 
@@ -358,18 +360,19 @@
             display: flex;
             gap: 30px;
         }
+
     }
 
     .modal-ranking {
         width: 650px;
         min-height: 500px;
         max-height: 85%;
-        background-image: linear-gradient(rgb(0, 145, 255), rgb(226, 226, 226));
+        background-image: linear-gradient($corAzul, rgb(226, 226, 226));
         // background-image: url('../images/background.jpg');
         background-position: top center;
         background-size: cover;
         background-repeat: no-repeat;
-        box-shadow: 2px 2px 20px rgb(2, 180, 251);
+        box-shadow: 2px 2px 20px $corAzul;
         padding: 50px;
         border-radius: 30px;
         display: none;
@@ -403,6 +406,17 @@
         }
     }
 
+    .img-mario {
+        position: absolute;
+        right: -100px;
+        bottom: 0;
+        width: 150px;
+
+        &.mario1, &.mario3 {
+            left: -100px;
+        }
+    }
+
     .btn-modal {
         background: none;
         border: none;
@@ -427,15 +441,15 @@
 
     .btn-red-tr:not(:disabled) {
         cursor: pointer;
-        background-color: #e74c3c;
+        background-color: $corVermelha;
 
         &::before {
             position: absolute;
             content: "";
-            border-top: 5px solid lighten(#e74c3c, 5%);
-            border-left: 5px solid lighten(#e74c3c, 5%);
-            border-right: 5px solid darken(#e74c3c, 5%);
-            border-bottom: 5px solid darken(#e74c3c, 5%);
+            border-top: 5px solid lighten($corVermelha, 5%);
+            border-left: 5px solid lighten($corVermelha, 5%);
+            border-right: 5px solid darken($corVermelha, 5%);
+            border-bottom: 5px solid darken($corVermelha, 5%);
 
             top: 0px;
             right: 0px;
@@ -446,7 +460,7 @@
         }
 
         &:hover {
-            box-shadow: 7px 7px darken(#e74c3c, 20%), -7px -7px lighten(#e74c3c, 20%);
+            box-shadow: 7px 7px darken($corVermelha, 20%), -7px -7px lighten($corVermelha, 20%);
 
             &::before {
                 border: 0px;
@@ -458,6 +472,19 @@
         width: 200px;
         height: 50px;
         font-size: 25px;
+    }
+
+    .azul {
+        color: $corAzul;
+    }
+    .amarelo {
+        color: $corAmarela;
+    }
+    .vermelho {
+        color: $corVermelha;
+    }
+    .verde {
+        color: $corVerde;
     }
 
 }

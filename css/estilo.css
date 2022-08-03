@@ -92,8 +92,8 @@
   margin: 0 auto;
   position: relative;
   overflow: hidden;
-  border-bottom: 14px solid #037603;
-  background: linear-gradient(#00c1fc, #fff);
+  border-bottom: 14px solid #00ae33;
+  background: linear-gradient(#0097d3, white);
 }
 
 .cenario.start .clouds {
@@ -143,8 +143,8 @@
   padding: 20px;
   margin-top: 40px;
   background-color: #fff;
-  border: solid 4px #008cff;
-  box-shadow: 3px 3px #f5dd01, 1px 0 0.4em #060606;
+  border: solid 4px #0097d3;
+  box-shadow: 3px 3px #ffc900, 1px 0 0.4em #060606;
   opacity: 80%;
   display: flex;
   justify-content: space-between;
@@ -161,11 +161,11 @@
   display: block;
   font-size: 14px;
   font-weight: bold;
-  color: #0b3293;
+  color: #0097d3;
 }
 
 .cenario .header .wrapper-topo .label-topo .txt {
-  color: #0ba222;
+  color: #00ae33;
 }
 
 .cenario .header .wrapper-topo img {
@@ -265,7 +265,7 @@
   background-position: top center;
   background-size: cover;
   background-repeat: no-repeat;
-  box-shadow: 2px 2px 20px #fbf302;
+  box-shadow: 2px 2px 20px #ffc900;
   padding: 50px;
   border-radius: 30px;
   display: none;
@@ -283,14 +283,14 @@
   font-size: 36px;
   text-align: center;
   margin: 20px 0px;
-  color: #0da831;
+  color: #00ae33;
   -webkit-text-stroke: 3px black;
 }
 
 .modal .modal-start .input-jogador {
   width: 300px;
   height: 50px;
-  border: solid 3px #005dfd;
+  border: solid 3px #0097d3;
   border-radius: 10px;
   padding: 15px;
   font-size: 18px;
@@ -300,10 +300,7 @@
 .modal .modal-game-over {
   width: 650px;
   height: 500px;
-  background-image: linear-gradient(red, #480303);
-  background-position: top center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-image: linear-gradient(#0097d3, #e7e7e7);
   box-shadow: 2px 2px 20px #fb0202;
   padding: 50px;
   border-radius: 30px;
@@ -322,7 +319,7 @@
   font-size: 36px;
   text-align: center;
   margin: 20px 0px;
-  color: #0da831;
+  color: #ff201c;
   -webkit-text-stroke: 3px black;
 }
 
@@ -339,11 +336,11 @@
   width: 650px;
   min-height: 500px;
   max-height: 85%;
-  background-image: linear-gradient(#0091ff, #e2e2e2);
+  background-image: linear-gradient(#0097d3, #e2e2e2);
   background-position: top center;
   background-size: cover;
   background-repeat: no-repeat;
-  box-shadow: 2px 2px 20px #02b4fb;
+  box-shadow: 2px 2px 20px #0097d3;
   padding: 50px;
   border-radius: 30px;
   display: none;
@@ -377,6 +374,17 @@
   border-radius: 5px;
 }
 
+.modal .img-mario {
+  position: absolute;
+  right: -100px;
+  bottom: 0;
+  width: 150px;
+}
+
+.modal .img-mario.mario1, .modal .img-mario.mario3 {
+  left: -100px;
+}
+
 .modal .btn-modal {
   background: none;
   border: none;
@@ -398,16 +406,16 @@
 
 .modal .btn-red-tr:not(:disabled) {
   cursor: pointer;
-  background-color: #e74c3c;
+  background-color: #ff201c;
 }
 
 .modal .btn-red-tr:not(:disabled)::before {
   position: absolute;
   content: "";
-  border-top: 5px solid #ea6153;
-  border-left: 5px solid #ea6153;
-  border-right: 5px solid #e43725;
-  border-bottom: 5px solid #e43725;
+  border-top: 5px solid #ff3936;
+  border-left: 5px solid #ff3936;
+  border-right: 5px solid #ff0703;
+  border-bottom: 5px solid #ff0703;
   top: 0px;
   right: 0px;
   bottom: 0px;
@@ -416,7 +424,7 @@
 }
 
 .modal .btn-red-tr:not(:disabled):hover {
-  box-shadow: 7px 7px #a82315, -7px -7px #f29f97;
+  box-shadow: 7px 7px #b50300, -7px -7px #ff8482;
 }
 
 .modal .btn-red-tr:not(:disabled):hover::before {
@@ -427,4 +435,20 @@
   width: 200px;
   height: 50px;
   font-size: 25px;
+}
+
+.modal .azul {
+  color: #0097d3;
+}
+
+.modal .amarelo {
+  color: #ffc900;
+}
+
+.modal .vermelho {
+  color: #ff201c;
+}
+
+.modal .verde {
+  color: #00ae33;
 }

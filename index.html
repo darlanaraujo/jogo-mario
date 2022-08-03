@@ -56,25 +56,28 @@
     </main>
 
     <section class="modal" id="modal">
-        <div class="modal-start " id="modalStart">
-            <h1 class="titulo">Pronto para um novo desafio?</h1>
+        <div class="modal-start active" id="modalStart">
+            <h1 class="titulo"><span class="azul">Pronto</span> <span class="amarelo">para</span> <span class="vermelho">um</span> <span class="verde">novo</span> <span class="azul">desafio?</span></h1>
             <input type="text" class="input-jogador" id="inputJogador" placeholder="Jogador...">
             <button class="btn-modal btn-red-tr btn-start" id="btnStart" disabled>Iniciar Jogo!</button>
+            <img src="images/mario3.png" class="img-mario mario3">
         </div>
 
-        <div class="modal-game-over active" id="modalGameOver">
-            <h1 class="titulo">Que pena, voce perdeu!</h1>
+        <div class="modal-game-over" id="modalGameOver">
+            <h1 class="titulo"><span class="azul">Que</span> <span class="amarelo">pena,</span> <span class="vermelho">voce</span> <span class="verde">perdeu!</span></h1>
             <img src="images/game-over.gif" class="img-game-over">
             <div class="wrapper-btn">
                 <button class="btn-modal btn-red-tr btn-ranking" id="btnRanking">Ranking</button>
                 <button class="btn-modal btn-red-tr btn-reiniciar" id="btnReiniciar">Reiniciar</button>
             </div>
+
+            <img src="images/mario4.png" class="img-mario mario4">
             
         </div>
 
         <div class="modal-ranking" id="modalRanking">
-            <h1 class="titulo">Ranking</h1>
-            <table class="tabela-ranking" border="1">
+            <h1 class="titulo"><span class="azul">R</span><span class="amarelo">a</span><span class="vermelho">n</span><span class="verde">k</span><span class="azul">i</span><span class="amarelo">n</span><span class="vermelho">g</span><span class="verde">!</span></h1>
+            <table class="tabela-ranking" border="1" id="tabelaRanking">
                 <tr class="cabecalho">
                     <td>Posicao</td>
                     <td>Jogador</td>
@@ -82,16 +85,19 @@
                     <td>Tempo</td>
                     <td>Pontuacao</td>
                 </tr>
-                <tr class="dados">
+                <!-- Tabela que vem do JS -->
+                <!-- <tr class="dados">
                     <td>1</td>
                     <td>Darlan</td>
                     <td>20</td>
                     <td>30</td>
                     <td>70</td>
-                </tr>
+                </tr> -->
                 
             </table>
             <button class="btn-modal btn-red-tr btn-reiniciar" id="btnReiniciar">Reiniciar</button>
+            <img src="images/mario2.png" class="img-mario mario2">
+            <img src="images/mario1.png" class="img-mario mario1">
         </div>
     </section>
 </body>

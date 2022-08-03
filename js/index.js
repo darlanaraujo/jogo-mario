@@ -1,7 +1,7 @@
 // Elementos do jogo ======================================
 const btnStart = document.querySelector('#btnStart');
-const btnRanking = document.querySelector('#btnRanking');
-const btnReiniciar = document.querySelector('#btnReiniciar');
+const btnRanking = document.querySelectorAll('#btnRanking');
+const btnReiniciar = document.querySelectorAll('#btnReiniciar');
 const modal = document.querySelector('#modal');
 const modalStart = document.querySelector('#modalStart');
 const modalGameOver = document.querySelector('#modalGameOver');
@@ -11,6 +11,7 @@ const mario = document.querySelector('#mario');
 const pipe = document.querySelector('#pipe');
 const pipe2 = document.querySelector('#pipe2');
 const moedas = document.querySelectorAll('#moeda');
+const tabelaHTML = document.querySelector('#tabelaRanking');
 
 // Elementos de texto na tela =============================
 const inputJogador = document.querySelector('#inputJogador');
@@ -145,7 +146,22 @@ const reiniciar = () => {
     // modalGameOver.classList.remove('active');
     location. reload();
 };
-btnRanking.addEventListener('click', reiniciar);
+btnReiniciar.forEach((btn) => {
+    btn.addEventListener('click', reiniciar);
+});
+
+// Função que mostra o Ranking
+const ranking = () => {
+    modalGameOver.classList.remove('active');
+    modalRanking.classList.add('active');
+    
+    window.onload = () => {
+        tabelaRanking();
+    }
+};
+btnRanking.forEach((btn) => {
+    btn.addEventListener('click', ranking);
+});
 
 // Função que conta o tempo do jogo;
 const time = () => {
@@ -178,3 +194,48 @@ const pontuacao = setInterval(() => {
     });
 
 }, 250);
+
+
+// Função que monta a tabela
+const criarTabela = (posicao, nome, moedas, tempo, pontuacao) => {
+    const itemHTML = document.createElement('tr');
+    itemHTML.classList.add('dados');
+
+    itemHTML.innerHTML = `
+        <td>${posicao}</td>
+        <td>${nome}</td>
+        <td>${moedas}</td>
+        <td>${tempo}</td>
+        <td>${pontuacao}</td>
+    `
+
+    
+    tabelaHTML.appendChild(itemHTML);
+};
+
+
+// const dados2 = getBanco();
+
+const tabelaRanking = () => {
+    getBanco().forEach((item, index) => {
+        let posicao = index +1;
+        let nome = item.nomeJogador;
+        let moedas = item.pontuacaoJogador;
+        let tempo = item.tempoJogador;
+        let pontuacao = (item.pontuacaoJogador *2) + item.tempoJogador;
+
+        criarTabela(posicao, nome, moedas, tempo, pontuacao);
+        
+    });
+}
+
+function limparHTML() {
+    while(tabelaHTML.firstChild) {
+        tabelaHTML.removeChild(tabelaHTML.lastChild);
+    }
+}
+
+limparHTML();
+tabelaRanking();
+
+// console.log(dados2)
