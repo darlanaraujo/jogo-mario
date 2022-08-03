@@ -19,6 +19,15 @@ const txtJogador = document.querySelector('#txtJogador');
 const txtPontos = document.querySelector('#txtPontos');
 const txtTempo = document.querySelector('#txtTempo');
 
+// Elementos de audio =============================
+const somAbertura = document.querySelector('#somAbertura')
+const somGameOver = document.querySelector('#somGameOver')
+const somMoeda = document.querySelector('#somMoeda')
+const somPerdeu = document.querySelector('#somPerdeu')
+const somPrincipal = document.querySelector('#somPrincipal')
+const somPulo = document.querySelector('#somPulo')
+const somRanking = document.querySelector('#somRanking')
+
 // Variáveis globais
 let nomeJogador;
 let moedasJogador = 0;
@@ -59,6 +68,8 @@ const start = () => {
 
     limpaTexto();
 
+    playSom(somPrincipal);
+
     // Eventos
     document.addEventListener('keydown', pulo);
 };
@@ -97,6 +108,7 @@ const limpaTexto = () => {
 const pulo = (event) => {
     if (event.key === ' ' || event.key === 'ArrowUp') {
         mario.classList.add('pulo');
+        playSom(somPulo);
 
         setTimeout(() => {
             mario.classList.remove('pulo');
@@ -112,6 +124,7 @@ const loop = setInterval(() => {
     const marioPosition = +window.getComputedStyle(imgMario).bottom.replace('px', '');
 
     if (pipePosition <= 120 && pipePosition > 0 && marioPosition < 120 || pipePosition2 <= 120 && pipePosition2 > 0 && marioPosition < 120) {
+        stopSom(somPrincipal);
         // Pipe 1
         imgPipe.style.animation = 'none';
         imgPipe.style.left = `${pipePosition}px`;
@@ -127,6 +140,7 @@ const loop = setInterval(() => {
         // Muda a imagem e estilo;
         imgMario.src = 'images/game-over.png'
         imgMario.classList.add('game-over');
+        playSom(somPerdeu);
 
         // Encerra o loop, pontuação e tempo do jogo;
         clearInterval(loop);
@@ -147,8 +161,7 @@ const loop = setInterval(() => {
 
 // Função que reinicia a partida;
 const reiniciar = () => {
-    // modalStart.classList.add('active');
-    // modalGameOver.classList.remove('active');
+    playSom(somAbertura);
     location.reload();
 };
 btnReiniciar.forEach((btn) => {
@@ -159,6 +172,7 @@ btnReiniciar.forEach((btn) => {
 const ranking = () => {
     modalGameOver.classList.remove('active');
     modalRanking.classList.add('active');
+    playSom(somRanking);
 
     tabelaRanking();
 };
@@ -186,6 +200,8 @@ const pegaMoedas = setInterval(() => {
         if (moedaPosition <= 150 && marioPosition >= 150) {
             moedasJogador++; // Pega as moedas do jogador;
             txtPontos.innerHTML = moedasJogador;
+
+            playSom(somMoeda);
 
             moeda.style.display = 'none'; // apaga a moeda
 
@@ -244,4 +260,22 @@ const colocacao = (a, b) => {
             ? 1
             : 0;
 }
+
+// Função que toca o som do jogo
+const playSom = (elemento) => {
+    const audioContext = new AudioContext();
+    const element = elemento;
+    const source = audioContext.createMediaElementSource(element);
+    source.connect(audioContext.destination);
+    element.play();
+}
+
+const stopSom = (elemento) => {
+    const audioContext = new AudioContext();
+    const element = elemento;
+    const source = audioContext.createMediaElementSource(element);
+    source.connect(audioContext.destination);
+    element.pause();
+}
+playSom(somAbertura);
 
