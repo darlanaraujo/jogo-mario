@@ -393,12 +393,17 @@ $corVerde: #00ae33;
             -webkit-text-stroke: 3px black;
         }
 
+        .wrapper-tabela {
+            max-height: 500px;
+            overflow-y: scroll;
+        }
+
         .tabela-ranking {
             text-align: center;
             color: white;
             -webkit-text-stroke: 2px black;
             border-radius: 10px;
-            
+
             & td {
                 padding: 5px;
                 border-radius: 5px;
@@ -421,7 +426,8 @@ $corVerde: #00ae33;
         bottom: 0;
         width: 150px;
 
-        &.mario1, &.mario3 {
+        &.mario1,
+        &.mario3 {
             left: -100px;
         }
     }
@@ -477,7 +483,8 @@ $corVerde: #00ae33;
         }
     }
 
-    .btn-reiniciar, .btn-ranking {
+    .btn-reiniciar,
+    .btn-ranking {
         width: 200px;
         height: 50px;
         font-size: 25px;
@@ -486,12 +493,15 @@ $corVerde: #00ae33;
     .azul {
         color: $corAzul;
     }
+
     .amarelo {
         color: $corAmarela;
     }
+
     .vermelho {
         color: $corVermelha;
     }
+
     .verde {
         color: $corVerde;
     }

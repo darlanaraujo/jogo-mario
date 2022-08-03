@@ -7,10 +7,10 @@ const modalStart = document.querySelector('#modalStart');
 const modalGameOver = document.querySelector('#modalGameOver');
 const modalRanking = document.querySelector('#modalRanking');
 const cenario = document.querySelector('#cenario');
-const mario = document.querySelector('#mario');
-const pipe = document.querySelector('#pipe');
-const pipe2 = document.querySelector('#pipe2');
-const moedas = document.querySelectorAll('#moeda');
+const imgMario = document.querySelector('#mario');
+const imgPipe = document.querySelector('#pipe');
+const imgPipe2 = document.querySelector('#pipe2');
+const imgMoedas = document.querySelectorAll('#moeda');
 const tabelaHTML = document.querySelector('#tabelaRanking');
 
 // Elementos de texto na tela =============================
@@ -21,14 +21,15 @@ const txtTempo = document.querySelector('#txtTempo');
 
 // Variáveis globais
 let nomeJogador;
-let pontuacaoJogador = 0;
+let moedasJogador = 0;
 let tempoJogador = 0;
+let pontuacaoJogador = 0;
 
 // Função que cria um banco temporário que recebe o banco do LocalStorage, ele recebe os dados do jogador como parametro depois passa esses dados em um array para o banco na rede.
-const bancoTemp = (nome, pontuacao, tempo) => {
+const bancoTemp = (nome, moedas, tempo, pontuacao) => {
     let banco = getBanco();
-    
-    dados = { nomeJogador: nome, pontuacaoJogador: pontuacao, tempoJogador: tempo };
+
+    dados = { nomeJogador: nome, moedasJogador: moedas, tempoJogador: tempo, pontuacaoJogador: pontuacao };
 
     banco.unshift(dados);
 
@@ -70,23 +71,24 @@ const validaJogador = ({ target }) => {
 
         // Acesso pelo click do mouse
         btnStart.addEventListener('click', start);
-        
+
         // Acesso pelo enter do teclado
-        window.addEventListener('keypress', ( {key} ) => {
-            if(key === 'Enter') {
+        window.addEventListener('keypress', ({ key }) => {
+            if (key === 'Enter') {
                 start();
             }
         })
 
-        nomeJogador =  target.value.trim().toUpperCase();
-        
+        // Pega o nome do jogador
+        nomeJogador = target.value.trim().toUpperCase();
+
     } else {
         btnStart.setAttribute('disabled', '');
     }
 };
-
 inputJogador.addEventListener('input', validaJogador);
 
+// Função que limpa a caixa de texto;
 const limpaTexto = () => {
     inputJogador.value = '';
 };
@@ -105,34 +107,37 @@ const pulo = (event) => {
 // Loop que verifica se o jogador perdeu
 const loop = setInterval(() => {
 
-    const pipePosition = pipe.offsetLeft;
-    const pipePosition2 = pipe2.offsetLeft;
-    const marioPosition = +window.getComputedStyle(mario).bottom.replace('px', '');
+    const pipePosition = imgPipe.offsetLeft;
+    const pipePosition2 = imgPipe2.offsetLeft;
+    const marioPosition = +window.getComputedStyle(imgMario).bottom.replace('px', '');
 
     if (pipePosition <= 120 && pipePosition > 0 && marioPosition < 120 || pipePosition2 <= 120 && pipePosition2 > 0 && marioPosition < 120) {
         // Pipe 1
-        pipe.style.animation = 'none';
-        pipe.style.left = `${pipePosition}px`;
+        imgPipe.style.animation = 'none';
+        imgPipe.style.left = `${pipePosition}px`;
 
         // Pipe 2
-        pipe2.style.animation = 'none';
-        pipe2.style.left = `${pipePosition2}px`;
+        imgPipe2.style.animation = 'none';
+        imgPipe2.style.left = `${pipePosition2}px`;
 
         // Mario
-        mario.style.animation = 'none';
-        mario.style.bottom = `${marioPosition}px`
+        imgMario.style.animation = 'none';
+        imgMario.style.bottom = `${marioPosition}px`
 
         // Muda a imagem e estilo;
-        mario.src = 'images/game-over.png'
-        mario.classList.add('game-over');
+        imgMario.src = 'images/game-over.png'
+        imgMario.classList.add('game-over');
 
         // Encerra o loop, pontuação e tempo do jogo;
         clearInterval(loop);
-        clearInterval(pontuacao);
+        clearInterval(pegaMoedas);
         clearInterval(this.loopTime);
 
+        // Função que vai calcular os pontos do jogador;
+        calculoPontuacao();
+
         // Salvando no BD
-        bancoTemp(nomeJogador, pontuacaoJogador, tempoJogador);
+        bancoTemp(nomeJogador, moedasJogador, tempoJogador, pontuacaoJogador);
 
         // Mostra a tela de game over;
         modal.classList.remove('desabilitar');
@@ -144,7 +149,7 @@ const loop = setInterval(() => {
 const reiniciar = () => {
     // modalStart.classList.add('active');
     // modalGameOver.classList.remove('active');
-    location. reload();
+    location.reload();
 };
 btnReiniciar.forEach((btn) => {
     btn.addEventListener('click', reiniciar);
@@ -154,7 +159,7 @@ btnReiniciar.forEach((btn) => {
 const ranking = () => {
     modalGameOver.classList.remove('active');
     modalRanking.classList.add('active');
-    
+
     tabelaRanking();
 };
 btnRanking.forEach((btn) => {
@@ -165,23 +170,22 @@ btnRanking.forEach((btn) => {
 const time = () => {
     this.loopTime = setInterval(() => {
         const tempoAtual = +txtTempo.innerHTML;
-        tempoJogador = tempoAtual + 1;
+        tempoJogador = tempoAtual + 1; // Pega o tempo do jogador
         txtTempo.innerHTML = tempoJogador;
     }, 1000);
 
 }
 
 // Função que conta os pontos do jogador
-const pontuacao = setInterval(() => {
-    const marioPosition = +window.getComputedStyle(mario).bottom.replace('px', '');
+const pegaMoedas = setInterval(() => {
+    const marioPosition = +window.getComputedStyle(imgMario).bottom.replace('px', '');
 
-    moedas.forEach((moeda, index) => {
+    imgMoedas.forEach((moeda, index) => {
         const moedaPosition = moeda.offsetLeft;
 
         if (moedaPosition <= 150 && marioPosition >= 150) {
-            console.log(`pegou a moeda no index ${index}`);
-            pontuacaoJogador++;
-            txtPontos.innerHTML = pontuacaoJogador;
+            moedasJogador++; // Pega as moedas do jogador;
+            txtPontos.innerHTML = moedasJogador;
 
             moeda.style.display = 'none'; // apaga a moeda
 
@@ -193,6 +197,10 @@ const pontuacao = setInterval(() => {
 
 }, 250);
 
+// Função que calcula a pontuação do jogador;
+const calculoPontuacao = () => {
+    pontuacaoJogador = (moedasJogador * 2) + tempoJogador;
+}
 
 // Função que monta a tabela
 const criarTabela = (posicao, nome, moedas, tempo, pontuacao) => {
@@ -206,8 +214,6 @@ const criarTabela = (posicao, nome, moedas, tempo, pontuacao) => {
         <td>${tempo}</td>
         <td>${pontuacao}</td>
     `
-
-    
     tabelaHTML.appendChild(itemHTML);
 };
 
@@ -215,14 +221,27 @@ const criarTabela = (posicao, nome, moedas, tempo, pontuacao) => {
 // const dados2 = getBanco();
 
 const tabelaRanking = () => {
-    getBanco().forEach((item, index) => {
-        let posicao = index +1;
+    // Variavel que recebe o banco depois de ser reorganizado na ordem crescente;
+    const sorted = getBanco().sort(colocacao).reverse();
+
+    sorted.forEach((item, index) => {
+        let posicao = index + 1;
         let nome = item.nomeJogador;
-        let moedas = item.pontuacaoJogador;
+        let moedas = item.moedasJogador;
         let tempo = item.tempoJogador;
-        let pontuacao = (item.pontuacaoJogador *2) + item.tempoJogador;
+        let pontuacao = item.pontuacaoJogador;
 
         criarTabela(posicao, nome, moedas, tempo, pontuacao);
-        
+
     });
 }
+
+// Função que organiza a colocação dos jogadores
+const colocacao = (a, b) => {
+    return a.pontuacaoJogador < b.pontuacaoJogador
+        ? -1
+        : a.pontuacaoJogador > b.pontuacaoJogador
+            ? 1
+            : 0;
+}
+
