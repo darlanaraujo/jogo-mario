@@ -155,9 +155,7 @@ const ranking = () => {
     modalGameOver.classList.remove('active');
     modalRanking.classList.add('active');
     
-    window.onload = () => {
-        tabelaRanking();
-    }
+    tabelaRanking();
 };
 btnRanking.forEach((btn) => {
     btn.addEventListener('click', ranking);
@@ -228,14 +226,3 @@ const tabelaRanking = () => {
         
     });
 }
-
-function limparHTML() {
-    while(tabelaHTML.firstChild) {
-        tabelaHTML.removeChild(tabelaHTML.lastChild);
-    }
-}
-
-limparHTML();
-tabelaRanking();
-
-// console.log(dados2)

@@ -374,6 +374,14 @@
   border-radius: 5px;
 }
 
+.modal .modal-ranking .regra {
+  font-family: sans-serif;
+  font-style: italic;
+  color: white;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
 .modal .img-mario {
   position: absolute;
   right: -100px;
