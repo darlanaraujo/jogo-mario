@@ -54,24 +54,24 @@ $corVerde: #00ae33;
 @keyframes bullet2-animation {
     0% {
         right: 0;
-        top: 65%;
+        bottom: 10px;
+    }
+
+    20% {
+        bottom: 50px;
     }
 
     30% {
-        top: 50%;
+        bottom: 10px;
     }
 
     50% {
-        top: 65%;
-    }
-
-    70% {
-        top: 70%;
+        bottom: 120px;
     }
 
     100% {
         right: 100%;
-        top: 40%;
+        bottom: 550px;
 
     }
 }
@@ -99,7 +99,7 @@ $corVerde: #00ae33;
         bottom: 200px;
     }
 
-    70% {
+    90% {
         bottom: 200px;
     }
 
@@ -128,17 +128,17 @@ $corVerde: #00ae33;
             animation: clouds-animation 20.5s infinite linear 10.2s;
         }
 
-        .pipe {
-            animation: move-animation 1.5s infinite linear;
-        }
+        // .pipe {
+        //     animation: move-animation 1.5s infinite linear;
+        // }
 
-        .pipe2 {
-            animation: move-animation 1.5s infinite linear 2.3s;
-        }
+        // .pipe2 {
+        //     animation: move-animation 1.5s infinite linear 2.3s;
+        // }
 
-        .bullet {
-            animation: bullet-animation 3.5s infinite linear .7s;
-        }
+        // .bullet {
+        //     animation: bullet-animation 3.5s infinite linear .7s;
+        // }
 
         .bullet2 {
             animation: bullet2-animation 3s infinite linear .7s;
@@ -212,6 +212,7 @@ $corVerde: #00ae33;
         width: 400px;
         position: absolute;
         top: 150px;
+        right: -400px;
     }
 
     .clouds2 {
@@ -224,6 +225,7 @@ $corVerde: #00ae33;
     .pipe {
         position: absolute;
         bottom: 0;
+        right: -90px;
         width: 80px;
     }
 
@@ -236,14 +238,14 @@ $corVerde: #00ae33;
 
     .bullet {
         position: absolute;
-        top: 50%;
+        bottom: 50px;
         width: 90px;
         right: -90px;
     }
 
     .bullet2 {
         position: absolute;
-        top: 50%;
+        bottom: 50%;
         width: 90px;
         right: -90px;
     }
@@ -310,7 +312,7 @@ $corVerde: #00ae33;
 
     .modal-start {
         width: 650px;
-        height: 400px;
+        // height: 500px;
         // background-color: #fff;
         background-image: url('../images/background.jpg');
         background-position: top center;
@@ -335,6 +337,16 @@ $corVerde: #00ae33;
             margin: 20px 0px;
             color: $corVerde;
             -webkit-text-stroke: 3px black;
+        }
+
+        .regra {
+            text-align: center;
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, .80);
+            box-shadow: 1px 1px 10px rgba(0, 0, 0, .80);
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
         }
 
         .input-jogador {

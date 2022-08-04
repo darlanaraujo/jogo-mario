@@ -10,6 +10,7 @@ const cenario = document.querySelector('#cenario');
 const imgMario = document.querySelector('#mario');
 const imgPipe = document.querySelector('#pipe');
 const imgPipe2 = document.querySelector('#pipe2');
+const imgBullet = document.querySelector('#bullet')
 const imgMoedas = document.querySelectorAll('#moeda');
 const tabelaHTML = document.querySelector('#tabelaRanking');
 
@@ -59,19 +60,20 @@ const start = () => {
     divSleep.classList.add('active');
     setInterval(() => {
         let cont = +txtSleep.innerHTML;
-        if(cont > 0) {
+        if (cont >= 0) {
             setTimeout(() => {
                 cont--;
                 txtSleep.innerHTML = cont;
             }, 500);
         }
     }, 1000);
-    
+
+
     limpaTexto();
-    
+
     stopSom('somAbertura');
     playSom('somPrincipal');
-    
+
     // Eventos
     document.addEventListener('keydown', pulo);
 
@@ -81,6 +83,8 @@ const start = () => {
         cenario.classList.add('start');
         // Inicia a contagem do tempo.
         time();
+        moverElementos(imgPipe);
+        moverElementos(imgBullet, 1);
     }, 3000);
 
 };
@@ -157,6 +161,7 @@ const loop = setInterval(() => {
         clearInterval(loop);
         clearInterval(pegaMoedas);
         clearInterval(this.loopTime);
+        clearInterval(this.loopElementos);
 
         // Função que vai calcular os pontos do jogador;
         calculoPontuacao();
@@ -290,3 +295,20 @@ const stopSom = (elemento) => {
 }
 playSom('somAbertura');
 
+const moverElementos = (elemento, retardo = 0) => {
+    this.loopElementos = setInterval(() => {
+        const positionElemento = elemento.offsetLeft;
+
+        if (tempoJogador <= 10) {
+            elemento.style.animation = `move-animation 2.5s infinite linear ${retardo}s`;
+        } else if (tempoJogador <= 20 && positionElemento <= 0) {
+            elemento.style.rigth = '-90px';
+            elemento.style.animation = `move-animation 2.0s infinite linear ${retardo}s`;
+        } else if (tempoJogador > 20 && positionElemento <= 0) {
+            elemento.style.rigth = '-90px';
+            elemento.style.animation = `move-animation 1.5s infinite linear ${retardo}s`;
+        }
+    }, 100);
+
+
+}

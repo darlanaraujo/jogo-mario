@@ -42,20 +42,20 @@
 @keyframes bullet2-animation {
   0% {
     right: 0;
-    top: 65%;
+    bottom: 10px;
+  }
+  20% {
+    bottom: 50px;
   }
   30% {
-    top: 50%;
+    bottom: 10px;
   }
   50% {
-    top: 65%;
-  }
-  70% {
-    top: 70%;
+    bottom: 120px;
   }
   100% {
     right: 100%;
-    top: 40%;
+    bottom: 550px;
   }
 }
 
@@ -78,7 +78,7 @@
   50% {
     bottom: 200px;
   }
-  70% {
+  90% {
     bottom: 200px;
   }
   100% {
@@ -102,18 +102,6 @@
 
 .cenario.start .clouds2 {
   animation: clouds-animation 20.5s infinite linear 10.2s;
-}
-
-.cenario.start .pipe {
-  animation: move-animation 1.5s infinite linear;
-}
-
-.cenario.start .pipe2 {
-  animation: move-animation 1.5s infinite linear 2.3s;
-}
-
-.cenario.start .bullet {
-  animation: bullet-animation 3.5s infinite linear .7s;
 }
 
 .cenario.start .bullet2 {
@@ -185,6 +173,7 @@
   width: 400px;
   position: absolute;
   top: 150px;
+  right: -400px;
 }
 
 .cenario .clouds2 {
@@ -197,6 +186,7 @@
 .cenario .pipe {
   position: absolute;
   bottom: 0;
+  right: -90px;
   width: 80px;
 }
 
@@ -209,14 +199,14 @@
 
 .cenario .bullet {
   position: absolute;
-  top: 50%;
+  bottom: 50px;
   width: 90px;
   right: -90px;
 }
 
 .cenario .bullet2 {
   position: absolute;
-  top: 50%;
+  bottom: 50%;
   width: 90px;
   right: -90px;
 }
@@ -279,7 +269,6 @@
 
 .modal .modal-start {
   width: 650px;
-  height: 400px;
   background-image: url("../images/background.jpg");
   background-position: top center;
   background-size: cover;
@@ -304,6 +293,16 @@
   margin: 20px 0px;
   color: #00ae33;
   -webkit-text-stroke: 3px black;
+}
+
+.modal .modal-start .regra {
+  text-align: center;
+  font-size: 14px;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 .modal .modal-start .input-jogador {
