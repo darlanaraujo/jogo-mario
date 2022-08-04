@@ -53,6 +53,7 @@
         <img src="images/moeda.png" class="moeda moeda2" id="moeda">
         <img src="images/moeda.png" class="moeda moeda3" id="moeda">
         <img class="mario" id="mario" src="images/mario.gif">
+        <!-- <img class="mario-agachado" src="images/mario-agachado.png"> -->
 
         <div class="sleep" id="divSleep">
             <span id="txtSleep">3</span>
@@ -63,10 +64,11 @@
         <div class="modal-start active" id="modalStart">
             <h1 class="titulo"><span class="azul">Pronto</span> <span class="amarelo">para</span> <span
                     class="vermelho">um</span> <span class="verde">novo</span> <span class="azul">desafio?</span></h1>
-            
+
             <input type="text" class="input-jogador" id="inputJogador" placeholder="Jogador...">
             <button class="btn-modal btn-red-tr btn-start" id="btnStart" disabled>Iniciar Jogo!</button>
-            <p class="regra">Use a tecla <span class="vermelho">"Arrow Up"</span> ou <span class="azul">"Space"</span> do teclado para se desviar dos obstaculos!</p>
+            <p class="regra">Use a tecla <span class="vermelho">"Arrow Up"</span>, <span class="verde">"Arrow
+                    Down"</span> ou <span class="azul">"Space"</span> do teclado para se desviar dos obstaculos!</p>
             <img src="images/mario3.png" class="img-mario mario3">
         </div>
 
@@ -87,7 +89,7 @@
             <h1 class="titulo"><span class="azul">R</span><span class="amarelo">a</span><span
                     class="vermelho">n</span><span class="verde">k</span><span class="azul">i</span><span
                     class="amarelo">n</span><span class="vermelho">g</span><span class="verde">!</span></h1>
-            
+
             <div class="wrapper-tabela" id="wrapperTabela">
                 <table class="tabela-ranking" border="1" id="tabelaRanking">
                     <tr class="cabecalho">
@@ -97,7 +99,7 @@
                         <td>Tempo</td>
                         <td>Pontuacao</td>
                     </tr>
-    
+
                     <!-- Tabela que vem do JS -->
                     <!-- <tr class="dados">
                         <td>1</td>
@@ -122,6 +124,8 @@
     <audio src="audio/audio-principal.mp3" id="somPrincipal"></audio>
     <audio src="audio/audio-pulo.wav" id="somPulo"></audio>
     <audio src="audio/audio-ranking.wav" id="somRanking"></audio>
+    <audio src="audio/audio-velocidade.wav" id="somVelocidade"></audio>
+    <audio src="audio/audio-agachado.wav" id="somAgachado"></audio>
 </body>
 
 </html>

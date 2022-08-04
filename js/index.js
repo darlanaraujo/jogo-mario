@@ -76,6 +76,8 @@ const start = () => {
 
     // Eventos
     document.addEventListener('keydown', pulo);
+    document.addEventListener('keydown', abaixar);
+    document.addEventListener('keyup', levantar);
 
     // Função que retarta o inicio do jogo em 3s.
     setInterval(() => {
@@ -131,14 +133,33 @@ const pulo = (event) => {
     }
 };
 
+// Função que faz o Mario abaixar;
+const abaixar = (event) => {
+    if (event.key === 'ArrowDown') {
+        imgMario.src = 'images/mario-agachado.png';
+        imgMario.classList.add('mario-agachado');
+        playSom('somAgachado');
+    }
+}
+
+// Função que faz o Mario levantar;
+const levantar = (event) => {
+    if (event.key === 'ArrowDown') {
+        imgMario.src = 'images/mario.gif';
+        imgMario.classList.remove('mario-agachado');
+    }
+}
+
 // Loop que verifica se o jogador perdeu
 const loop = setInterval(() => {
 
     const pipePosition = imgPipe.offsetLeft;
     const pipePosition2 = imgPipe2.offsetLeft;
+    const bulletPosition = imgBullet.offsetLeft;
     const marioPosition = +window.getComputedStyle(imgMario).bottom.replace('px', '');
+    const marioAltura = imgMario.offsetHeight;
 
-    if (pipePosition <= 120 && pipePosition > 0 && marioPosition < 120 || pipePosition2 <= 120 && pipePosition2 > 0 && marioPosition < 120) {
+    if (pipePosition <= 120 && pipePosition > 0 && marioPosition < 120 || bulletPosition <= 120 && bulletPosition > 0 && marioAltura > 70 && marioPosition < 120) {
         stopSom('somPrincipal');
         // Pipe 1
         imgPipe.style.animation = 'none';
@@ -147,6 +168,10 @@ const loop = setInterval(() => {
         // Pipe 2
         imgPipe2.style.animation = 'none';
         imgPipe2.style.left = `${pipePosition2}px`;
+
+        // Bullet
+        imgBullet.style.animation = 'none';
+        imgBullet.style.left = `${bulletPosition}px`;
 
         // Mario
         imgMario.style.animation = 'none';
@@ -298,9 +323,9 @@ playSom('somAbertura');
 const moverElementos = (elemento, retardo = 0) => {
     this.loopElementos = setInterval(() => {
         const positionElemento = elemento.offsetLeft;
-
         if (tempoJogador <= 10) {
             elemento.style.animation = `move-animation 2.5s infinite linear ${retardo}s`;
+
         } else if (tempoJogador <= 20 && positionElemento <= 0) {
             elemento.style.rigth = '-90px';
             elemento.style.animation = `move-animation 2.0s infinite linear ${retardo}s`;
