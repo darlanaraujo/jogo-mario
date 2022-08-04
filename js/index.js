@@ -13,20 +13,14 @@ const imgPipe2 = document.querySelector('#pipe2');
 const imgMoedas = document.querySelectorAll('#moeda');
 const tabelaHTML = document.querySelector('#tabelaRanking');
 
+const divSleep = document.querySelector('#divSleep');
+const txtSleep = document.querySelector('#txtSleep');
+
 // Elementos de texto na tela =============================
 const inputJogador = document.querySelector('#inputJogador');
 const txtJogador = document.querySelector('#txtJogador');
 const txtPontos = document.querySelector('#txtPontos');
 const txtTempo = document.querySelector('#txtTempo');
-
-// Elementos de audio =============================
-const somAbertura = document.querySelector('#somAbertura')
-const somGameOver = document.querySelector('#somGameOver')
-const somMoeda = document.querySelector('#somMoeda')
-const somPerdeu = document.querySelector('#somPerdeu')
-const somPrincipal = document.querySelector('#somPrincipal')
-const somPulo = document.querySelector('#somPulo')
-const somRanking = document.querySelector('#somRanking')
 
 // Variáveis globais
 let nomeJogador;
@@ -60,18 +54,35 @@ const getBanco = () => {
 const start = () => {
     modal.classList.add('desabilitar');
     modalStart.classList.remove('active');
-    cenario.classList.add('start');
     txtJogador.innerHTML = nomeJogador;
 
-    // Inicia a contagem do tempo.
-    time();
-
+    divSleep.classList.add('active');
+    setInterval(() => {
+        let cont = +txtSleep.innerHTML;
+        if(cont > 0) {
+            setTimeout(() => {
+                cont--;
+                txtSleep.innerHTML = cont;
+            }, 500);
+        }
+    }, 1000);
+    
     limpaTexto();
-
-    playSom(somPrincipal);
-
+    
+    stopSom('somAbertura');
+    playSom('somPrincipal');
+    
     // Eventos
     document.addEventListener('keydown', pulo);
+
+    // Função que retarta o inicio do jogo em 3s.
+    setInterval(() => {
+        divSleep.classList.remove('active');
+        cenario.classList.add('start');
+        // Inicia a contagem do tempo.
+        time();
+    }, 3000);
+
 };
 
 // Função que valida se o jogador preencheu o nome com pelo menos 3 caracteres;
@@ -108,7 +119,7 @@ const limpaTexto = () => {
 const pulo = (event) => {
     if (event.key === ' ' || event.key === 'ArrowUp') {
         mario.classList.add('pulo');
-        playSom(somPulo);
+        playSom('somPulo');
 
         setTimeout(() => {
             mario.classList.remove('pulo');
@@ -124,7 +135,7 @@ const loop = setInterval(() => {
     const marioPosition = +window.getComputedStyle(imgMario).bottom.replace('px', '');
 
     if (pipePosition <= 120 && pipePosition > 0 && marioPosition < 120 || pipePosition2 <= 120 && pipePosition2 > 0 && marioPosition < 120) {
-        stopSom(somPrincipal);
+        stopSom('somPrincipal');
         // Pipe 1
         imgPipe.style.animation = 'none';
         imgPipe.style.left = `${pipePosition}px`;
@@ -140,7 +151,7 @@ const loop = setInterval(() => {
         // Muda a imagem e estilo;
         imgMario.src = 'images/game-over.png'
         imgMario.classList.add('game-over');
-        playSom(somPerdeu);
+        playSom('somPerdeu');
 
         // Encerra o loop, pontuação e tempo do jogo;
         clearInterval(loop);
@@ -161,7 +172,7 @@ const loop = setInterval(() => {
 
 // Função que reinicia a partida;
 const reiniciar = () => {
-    playSom(somAbertura);
+    playSom('somAbertura');
     location.reload();
 };
 btnReiniciar.forEach((btn) => {
@@ -172,7 +183,7 @@ btnReiniciar.forEach((btn) => {
 const ranking = () => {
     modalGameOver.classList.remove('active');
     modalRanking.classList.add('active');
-    playSom(somRanking);
+    playSom('somRanking');
 
     tabelaRanking();
 };
@@ -184,8 +195,10 @@ btnRanking.forEach((btn) => {
 const time = () => {
     this.loopTime = setInterval(() => {
         const tempoAtual = +txtTempo.innerHTML;
-        tempoJogador = tempoAtual + 1; // Pega o tempo do jogador
-        txtTempo.innerHTML = tempoJogador;
+        setTimeout(() => {
+            tempoJogador = tempoAtual + 1; // Pega o tempo do jogador
+            txtTempo.innerHTML = tempoJogador;
+        }, 500);
     }, 1000);
 
 }
@@ -201,7 +214,7 @@ const pegaMoedas = setInterval(() => {
             moedasJogador++; // Pega as moedas do jogador;
             txtPontos.innerHTML = moedasJogador;
 
-            playSom(somMoeda);
+            playSom('somMoeda');
 
             moeda.style.display = 'none'; // apaga a moeda
 
@@ -234,8 +247,6 @@ const criarTabela = (posicao, nome, moedas, tempo, pontuacao) => {
 };
 
 
-// const dados2 = getBanco();
-
 const tabelaRanking = () => {
     // Variavel que recebe o banco depois de ser reorganizado na ordem crescente;
     const sorted = getBanco().sort(colocacao).reverse();
@@ -263,19 +274,19 @@ const colocacao = (a, b) => {
 
 // Função que toca o som do jogo
 const playSom = (elemento) => {
-    const audioContext = new AudioContext();
-    const element = elemento;
-    const source = audioContext.createMediaElementSource(element);
-    source.connect(audioContext.destination);
+    const audioContext = new AudioContext().resume();
+    const element = document.querySelector(`#${elemento}`);
+    // const source = audioContext.createMediaElementSource(element);
+    // source.connect(audioContext.destination);
     element.play();
 }
 
 const stopSom = (elemento) => {
     const audioContext = new AudioContext();
-    const element = elemento;
-    const source = audioContext.createMediaElementSource(element);
-    source.connect(audioContext.destination);
+    const element = document.querySelector(`#${elemento}`);
+    // const source = audioContext.createMediaElementSource(element);
+    // source.connect(audioContext.destination);
     element.pause();
 }
-playSom(somAbertura);
+playSom('somAbertura');
 

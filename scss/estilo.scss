@@ -270,6 +270,27 @@ $corVerde: #00ae33;
     .pulo {
         animation: pulo-animation .5s ease-out;
     }
+
+    .sleep {
+        // position: absolute;
+        margin: 5% auto;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        width: 200px;
+        height: 200px;
+        background-color: white;
+        border-radius: 50%;
+        border: solid 10px $corVerde;
+        box-shadow: 1px 1px 20px rgba(0, 0, 0, .80);
+        font-size: 55px;
+
+        &.active {
+            display: flex;
+            animation: fade-up .5s forwards;
+        }
+
+    }
 }
 
 .modal {
