@@ -456,13 +456,14 @@ $corVerde: #00ae33;
 
             &::-webkit-scrollbar-thumb {
                 background: $corAzul;
-                border-left: 2px solid white;
-                border-right: 2px solid white;
+                border-left: 2px solid rgba(255, 255, 255, 0.3);
+                border-right: 2px solid rgba(255, 255, 255, 0.3);
                 border-radius: 5px;
             }
 
             &::-webkit-scrollbar-track {
-                background-color: white;
+                background-color: rgba(255, 255, 255, 0.3);
+                border-radius: 5px;
             }
         }
 
