@@ -16,6 +16,7 @@ $corVerde: #00ae33;
     padding: 0;
     box-sizing: border-box;
     font-family: 'mario';
+    text-decoration: none;
 }
 
 // Animações
@@ -109,6 +110,43 @@ $corVerde: #00ae33;
     }
 }
 
+@keyframes voar-animation {
+    0% {
+        bottom: 0;
+        left: 0;
+    }
+
+    15% {
+        bottom: 20%;
+        left: 50px;
+    }
+
+    30% {
+        bottom: 60%;
+        left: 150px;
+    }
+
+    50% {
+        bottom: 60%;
+        left: 250px;
+    }
+
+    70% {
+        bottom: 60%;
+        left: 250px;
+    }
+
+    80% {
+        bottom: 20%;
+        left: 50px;
+    }
+
+    100% {
+        bottom: 0;
+        left: 0;
+    }
+}
+
 @keyframes pulsar-animate {
     from {
         transform: scale(1);
@@ -138,22 +176,6 @@ $corVerde: #00ae33;
             animation: clouds-animation 20.5s infinite linear 10.2s;
         }
 
-        // .pipe {
-        //     animation: move-animation 1.5s infinite linear;
-        // }
-
-        // .pipe2 {
-        //     animation: move-animation 1.5s infinite linear 2.3s;
-        // }
-
-        // .bullet {
-        //     animation: bullet-animation 3.5s infinite linear .7s;
-        // }
-
-        .bullet2 {
-            animation: bullet2-animation 3s infinite linear .7s;
-        }
-
         .moeda {
             animation: move-animation 3s infinite linear;
         }
@@ -165,6 +187,14 @@ $corVerde: #00ae33;
         .moeda3 {
             animation: move-animation 3s infinite linear 1s;
         }
+
+        .estrela1 {
+            animation: move-animation 2.5s infinite linear;
+        }
+
+        .estrela2 {
+            animation: move-animation 3s infinite linear .5s;
+        }
     }
 
     .header {
@@ -173,7 +203,7 @@ $corVerde: #00ae33;
         justify-content: center;
 
         .wrapper-topo {
-            width: 650px;
+            width: 750px;
             padding: 20px;
             margin-top: 40px;
             background-color: #fff;
@@ -196,10 +226,6 @@ $corVerde: #00ae33;
                     font-weight: bold;
                     color: $corAzul;
                 }
-
-                .txt {
-                    color: $corVerde;
-                }
             }
 
             img {
@@ -213,7 +239,7 @@ $corVerde: #00ae33;
 
             .controle {
                 display: flex;
-                gap: 60px;
+                gap: 10px;
             }
         }
     }
@@ -237,13 +263,6 @@ $corVerde: #00ae33;
         bottom: 0;
         right: -90px;
         width: 80px;
-    }
-
-    .pipe2 {
-        position: absolute;
-        bottom: 0;
-        right: -90px;
-        width: 90px;
     }
 
     .bullet {
@@ -284,6 +303,14 @@ $corVerde: #00ae33;
         // left: 100px;
     }
 
+    .estrela {
+        position: absolute;
+        width: 60px;
+        bottom: 70%;
+        // left: 200px;
+        right: -60px;
+    }
+
     .game-over {
         width: 80px;
         left: 50px;
@@ -293,24 +320,72 @@ $corVerde: #00ae33;
         animation: pulo-animation .5s ease-out;
     }
 
+    .voar {
+        // bottom: 60%;
+        animation: voar-animation 1.5s ease-in-out;
+    }
+
     .sleep {
         // position: absolute;
-        margin: 5% auto;
         display: none;
-        justify-content: center;
-        align-items: center;
-        width: 200px;
-        height: 200px;
-        background-color: white;
-        border-radius: 50%;
-        border: solid 10px $corVerde;
-        box-shadow: 1px 1px 20px rgba(0, 0, 0, .80);
-        font-size: 55px;
+        width: 100%;
+        height: 100vh;
+        
 
         &.active {
             display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
             animation: fade-up .5s forwards;
+            
+        }
+
+        .contagem {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 200px;
+            height: 200px;
+            background-color: white;
+            border-radius: 50%;
+            border: solid 10px $corVermelha;
+            box-shadow: 1px 1px 20px rgba(0, 0, 0, .80);
+            font-size: 55px;
             animation: pulsar-animate 1s infinite;
+        }
+
+        .regra-jogo {
+            margin-top: 50px;
+            width: 700px;
+            background-color: white;
+            box-shadow: 1px 1px 20px rgba(0, 0, 0, .80);
+            padding: 10px;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+
+            img {
+                display: block;
+                width: 100px;
+            }
+
+            .bloco-regras {
+                display: grid;
+                grid-template-rows: auto;
+                gap: 10px;
+                width: 100%;
+                justify-content: center;
+                justify-items: center;
+                align-items: center;
+                text-align: center;
+                font-size: 14px;
+                border-radius: 5px;
+                background-color: rgb(243, 243, 243);
+
+                // border: solid 1px red;
+            }
         }
 
     }
@@ -479,11 +554,11 @@ $corVerde: #00ae33;
             }
         }
 
-        .regra {
+        .regra-pontuacao {
             font-family: sans-serif;
             font-style: italic;
             color: white;
-            margin-top: 10px;
+            margin-top: 20px;
             font-size: 14px;
 
         }
@@ -559,20 +634,52 @@ $corVerde: #00ae33;
         font-size: 25px;
     }
 
-    .azul {
-        color: $corAzul;
+}
+
+.azul {
+    color: $corAzul;
+}
+
+.amarelo {
+    color: $corAmarela;
+}
+
+.vermelho {
+    color: $corVermelha;
+}
+
+.verde {
+    color: $corVerde;
+}
+
+.credito {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 20px;
+    background-color: rgba(0, 0, 0, 0.599);
+    border-radius: 8px;
+    font-size: 10px;
+    color: #ccc;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 1.5px;
+    font-family: sans-serif;
+    margin-top: 20px;
+
+    .link {
+        margin-left: 5px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        font-family: sans-serif;
+        color: rgb(255, 255, 255);
+        font-style: normal;
     }
 
-    .amarelo {
-        color: $corAmarela;
+    i {
+        margin: 0 5px;
+        color: rgb(255, 255, 255);
+        font-size: 14px;
     }
-
-    .vermelho {
-        color: $corVermelha;
-    }
-
-    .verde {
-        color: $corVerde;
-    }
-
 }

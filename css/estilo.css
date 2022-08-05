@@ -8,6 +8,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'mario';
+  text-decoration: none;
 }
 
 @keyframes fade-up {
@@ -86,6 +87,37 @@
   }
 }
 
+@keyframes voar-animation {
+  0% {
+    bottom: 0;
+    left: 0;
+  }
+  15% {
+    bottom: 20%;
+    left: 50px;
+  }
+  30% {
+    bottom: 60%;
+    left: 150px;
+  }
+  50% {
+    bottom: 60%;
+    left: 250px;
+  }
+  70% {
+    bottom: 60%;
+    left: 250px;
+  }
+  80% {
+    bottom: 20%;
+    left: 50px;
+  }
+  100% {
+    bottom: 0;
+    left: 0;
+  }
+}
+
 @keyframes pulsar-animate {
   from {
     transform: scale(1);
@@ -113,10 +145,6 @@
   animation: clouds-animation 20.5s infinite linear 10.2s;
 }
 
-.cenario.start .bullet2 {
-  animation: bullet2-animation 3s infinite linear .7s;
-}
-
 .cenario.start .moeda {
   animation: move-animation 3s infinite linear;
 }
@@ -129,6 +157,14 @@
   animation: move-animation 3s infinite linear 1s;
 }
 
+.cenario.start .estrela1 {
+  animation: move-animation 2.5s infinite linear;
+}
+
+.cenario.start .estrela2 {
+  animation: move-animation 3s infinite linear .5s;
+}
+
 .cenario .header {
   width: 100%;
   display: flex;
@@ -136,7 +172,7 @@
 }
 
 .cenario .header .wrapper-topo {
-  width: 650px;
+  width: 750px;
   padding: 20px;
   margin-top: 40px;
   background-color: #fff;
@@ -161,10 +197,6 @@
   color: #0097d3;
 }
 
-.cenario .header .wrapper-topo .label-topo .txt {
-  color: #00ae33;
-}
-
 .cenario .header .wrapper-topo img {
   position: absolute;
   left: 0;
@@ -175,7 +207,7 @@
 
 .cenario .header .wrapper-topo .controle {
   display: flex;
-  gap: 60px;
+  gap: 10px;
 }
 
 .cenario .clouds {
@@ -197,13 +229,6 @@
   bottom: 0;
   right: -90px;
   width: 80px;
-}
-
-.cenario .pipe2 {
-  position: absolute;
-  bottom: 0;
-  right: -90px;
-  width: 90px;
 }
 
 .cenario .bullet {
@@ -239,6 +264,13 @@
   right: -80px;
 }
 
+.cenario .estrela {
+  position: absolute;
+  width: 60px;
+  bottom: 70%;
+  right: -60px;
+}
+
 .cenario .game-over {
   width: 80px;
   left: 50px;
@@ -248,24 +280,67 @@
   animation: pulo-animation .5s ease-out;
 }
 
+.cenario .voar {
+  animation: voar-animation 1.5s ease-in-out;
+}
+
 .cenario .sleep {
-  margin: 5% auto;
   display: none;
+  width: 100%;
+  height: 100vh;
+}
+
+.cenario .sleep.active {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  animation: fade-up .5s forwards;
+}
+
+.cenario .sleep .contagem {
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 200px;
   height: 200px;
   background-color: white;
   border-radius: 50%;
-  border: solid 10px #00ae33;
+  border: solid 10px #ff201c;
   box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.8);
   font-size: 55px;
+  animation: pulsar-animate 1s infinite;
 }
 
-.cenario .sleep.active {
-  display: flex;
-  animation: fade-up .5s forwards;
-  animation: pulsar-animate 1s infinite;
+.cenario .sleep .regra-jogo {
+  margin-top: 50px;
+  width: 700px;
+  background-color: white;
+  box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+}
+
+.cenario .sleep .regra-jogo img {
+  display: block;
+  width: 100px;
+}
+
+.cenario .sleep .regra-jogo .bloco-regras {
+  display: grid;
+  grid-template-rows: auto;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  text-align: center;
+  font-size: 14px;
+  border-radius: 5px;
+  background-color: #f3f3f3;
 }
 
 .modal {
@@ -430,11 +505,11 @@
   border-radius: 5px;
 }
 
-.modal .modal-ranking .regra {
+.modal .modal-ranking .regra-pontuacao {
   font-family: sans-serif;
   font-style: italic;
   color: white;
-  margin-top: 10px;
+  margin-top: 20px;
   font-size: 14px;
 }
 
@@ -502,18 +577,50 @@
   font-size: 25px;
 }
 
-.modal .azul {
+.azul {
   color: #0097d3;
 }
 
-.modal .amarelo {
+.amarelo {
   color: #ffc900;
 }
 
-.modal .vermelho {
+.vermelho {
   color: #ff201c;
 }
 
-.modal .verde {
+.verde {
   color: #00ae33;
+}
+
+.credito {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 20px;
+  background-color: rgba(0, 0, 0, 0.599);
+  border-radius: 8px;
+  font-size: 10px;
+  color: #ccc;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 1.5px;
+  font-family: sans-serif;
+  margin-top: 20px;
+}
+
+.credito .link {
+  margin-left: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  font-family: sans-serif;
+  color: white;
+  font-style: normal;
+}
+
+.credito i {
+  margin: 0 5px;
+  color: white;
+  font-size: 14px;
 }

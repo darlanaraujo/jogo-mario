@@ -1,4 +1,6 @@
 // Elementos do jogo ======================================
+
+// Paginas e botões
 const btnStart = document.querySelector('#btnStart');
 const btnRanking = document.querySelectorAll('#btnRanking');
 const btnReiniciar = document.querySelectorAll('#btnReiniciar');
@@ -7,33 +9,38 @@ const modalStart = document.querySelector('#modalStart');
 const modalGameOver = document.querySelector('#modalGameOver');
 const modalRanking = document.querySelector('#modalRanking');
 const cenario = document.querySelector('#cenario');
-const imgMario = document.querySelector('#mario');
-const imgPipe = document.querySelector('#pipe');
-const imgPipe2 = document.querySelector('#pipe2');
-const imgBullet = document.querySelector('#bullet')
-const imgMoedas = document.querySelectorAll('#moeda');
-const tabelaHTML = document.querySelector('#tabelaRanking');
 
+// Elementos que movimentam
+const imgMario = document.querySelector('#imgMario');
+const imgPipe = document.querySelector('#imgPipe');
+const imgBullet = document.querySelector('#imgBullet')
+const imgMoedas = document.querySelectorAll('#imgMoeda');
+const imgEstrelas = document.querySelectorAll('#imgEstrela');
+
+// Estrutura HTML
 const divSleep = document.querySelector('#divSleep');
 const txtSleep = document.querySelector('#txtSleep');
+const tabelaHTML = document.querySelector('#tabelaRanking');
 
 // Elementos de texto na tela =============================
 const inputJogador = document.querySelector('#inputJogador');
 const txtJogador = document.querySelector('#txtJogador');
-const txtPontos = document.querySelector('#txtPontos');
+const txtMoedas = document.querySelector('#txtMoedas');
+const txtEstrelas = document.querySelector('#txtEstrelas');
 const txtTempo = document.querySelector('#txtTempo');
 
 // Variáveis globais
 let nomeJogador;
 let moedasJogador = 0;
+let estrelasJogador = 0;
 let tempoJogador = 0;
 let pontuacaoJogador = 0;
 
 // Função que cria um banco temporário que recebe o banco do LocalStorage, ele recebe os dados do jogador como parametro depois passa esses dados em um array para o banco na rede.
-const bancoTemp = (nome, moedas, tempo, pontuacao) => {
+const bancoTemp = (nome, moedas, estrelas, tempo, pontuacao) => {
     let banco = getBanco();
 
-    dados = { nomeJogador: nome, moedasJogador: moedas, tempoJogador: tempo, pontuacaoJogador: pontuacao };
+    dados = { nomeJogador: nome, moedasJogador: moedas, estrelasJogador: estrelas, tempoJogador: tempo, pontuacaoJogador: pontuacao };
 
     banco.unshift(dados);
 
@@ -87,7 +94,7 @@ const start = () => {
         time();
         moverElementos(imgPipe);
         moverElementos(imgBullet, 1);
-    }, 3000);
+    }, 5000);
 
 };
 
@@ -123,15 +130,30 @@ const limpaTexto = () => {
 
 // Função que faz o Mario pular;
 const pulo = (event) => {
-    if (event.key === ' ' || event.key === 'ArrowUp') {
-        mario.classList.add('pulo');
+    if (event.key === 'ArrowUp') {
+        imgMario.classList.add('pulo');
         playSom('somPulo');
 
         setTimeout(() => {
-            mario.classList.remove('pulo');
+            imgMario.classList.remove('pulo');
         }, 500);
     }
 };
+
+// Função que faz o Mario voar;
+const voar = (event) => {
+    if (event.key === ' ') {
+        imgMario.classList.add('voar');
+        imgMario.src = 'images/mario-voando.png'
+        playSom('somVoar');
+
+        setTimeout(() => {
+            imgMario.classList.remove('voar');
+            imgMario.src = 'images/mario.gif';
+        }, 1500);
+    }
+};
+document.addEventListener('keydown', voar);
 
 // Função que faz o Mario abaixar;
 const abaixar = (event) => {
@@ -154,7 +176,6 @@ const levantar = (event) => {
 const loop = setInterval(() => {
 
     const pipePosition = imgPipe.offsetLeft;
-    const pipePosition2 = imgPipe2.offsetLeft;
     const bulletPosition = imgBullet.offsetLeft;
     const marioPosition = +window.getComputedStyle(imgMario).bottom.replace('px', '');
     const marioAltura = imgMario.offsetHeight;
@@ -164,10 +185,6 @@ const loop = setInterval(() => {
         // Pipe 1
         imgPipe.style.animation = 'none';
         imgPipe.style.left = `${pipePosition}px`;
-
-        // Pipe 2
-        imgPipe2.style.animation = 'none';
-        imgPipe2.style.left = `${pipePosition2}px`;
 
         // Bullet
         imgBullet.style.animation = 'none';
@@ -192,7 +209,7 @@ const loop = setInterval(() => {
         calculoPontuacao();
 
         // Salvando no BD
-        bancoTemp(nomeJogador, moedasJogador, tempoJogador, pontuacaoJogador);
+        bancoTemp(nomeJogador, moedasJogador, estrelasJogador, tempoJogador, pontuacaoJogador);
 
         // Mostra a tela de game over;
         modal.classList.remove('desabilitar');
@@ -236,13 +253,15 @@ const time = () => {
 // Função que conta os pontos do jogador
 const pegaMoedas = setInterval(() => {
     const marioPosition = +window.getComputedStyle(imgMario).bottom.replace('px', '');
+    const marioPositionTop = +window.getComputedStyle(imgMario).top.replace('px', '');
+    const marioPositionleft = +window.getComputedStyle(imgMario).left.replace('px', '');
 
     imgMoedas.forEach((moeda, index) => {
         const moedaPosition = moeda.offsetLeft;
 
         if (moedaPosition <= 150 && marioPosition >= 150) {
             moedasJogador++; // Pega as moedas do jogador;
-            txtPontos.innerHTML = moedasJogador;
+            txtMoedas.innerHTML = moedasJogador;
 
             playSom('somMoeda');
 
@@ -254,15 +273,33 @@ const pegaMoedas = setInterval(() => {
         }
     });
 
+    imgEstrelas.forEach((estrela, index) => {
+        const estrelaPositionTop = +window.getComputedStyle(imgEstrelas[index]).top.replace('px', '');
+        const estrelaPositionLeft = +window.getComputedStyle(imgEstrelas[index]).left.replace('px', '');
+
+        if (marioPositionTop <= estrelaPositionTop && estrelaPositionLeft <= 250 && estrelaPositionLeft >= 200) {
+            estrelasJogador ++;
+            txtEstrelas.innerHTML = estrelasJogador;
+
+            playSom('somEstrela');
+
+            estrela.style.display = 'none'; // apaga a estrela
+
+            setInterval(() => {
+                estrela.style.display = 'block'; // mostra a estrela novamente depois de 50ms
+            }, 1050);
+        }
+    });
+
 }, 250);
 
 // Função que calcula a pontuação do jogador;
 const calculoPontuacao = () => {
-    pontuacaoJogador = (moedasJogador * 2) + tempoJogador;
+    pontuacaoJogador = (moedasJogador * 2) + (estrelasJogador * 5) + tempoJogador;
 }
 
 // Função que monta a tabela
-const criarTabela = (posicao, nome, moedas, tempo, pontuacao) => {
+const criarTabela = (posicao, nome, moedas, estrelas, tempo, pontuacao) => {
     const itemHTML = document.createElement('tr');
     itemHTML.classList.add('dados');
 
@@ -270,6 +307,7 @@ const criarTabela = (posicao, nome, moedas, tempo, pontuacao) => {
         <td>${posicao}</td>
         <td>${nome}</td>
         <td>${moedas}</td>
+        <td>${estrelas}</td>
         <td>${tempo}</td>
         <td>${pontuacao}</td>
     `
@@ -285,10 +323,11 @@ const tabelaRanking = () => {
         let posicao = index + 1;
         let nome = item.nomeJogador;
         let moedas = item.moedasJogador;
+        let estrela = item.estrelasJogador;
         let tempo = item.tempoJogador;
         let pontuacao = item.pontuacaoJogador;
 
-        criarTabela(posicao, nome, moedas, tempo, pontuacao);
+        criarTabela(posicao, nome, moedas, estrela, tempo, pontuacao);
 
     });
 }

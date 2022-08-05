@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!--Importação de imagens Fontawesome-->
+    <script src="https://kit.fontawesome.com/109d143e9b.js" crossorigin="anonymous"></script>
+
     <!-- Estilo -->
     <link rel="stylesheet" href="css/estilo.css">
 
@@ -24,39 +27,66 @@
             <div class="wrapper-topo">
                 <label class="label-topo">
                     <span class="titulo">Jogador:</span>
-                    <span class="jogador txt" id="txtJogador">Nome</span>
+                    <span class="jogador verde" id="txtJogador">Nome</span>
                 </label>
                 <img src="images/logo.png">
 
                 <div class="controle">
                     <label class="label-topo">
                         <span class="titulo">moedas:</span>
-                        <span class="pontos txt" id="txtPontos">00</span>
+                        <span class="pontos amarelo" id="txtMoedas">00</span>
+                    </label>
+
+                    <label class="label-topo">
+                        <span class="titulo">estrelas:</span>
+                        <span class="pontos vermelho" id="txtEstrelas">00</span>
                     </label>
 
                     <label class="label-topo">
                         <span class="titulo">Tempo:</span>
-                        <span class="tempo txt" id="txtTempo">00</span>
+                        <span class="tempo verde" id="txtTempo">00</span>
                     </label>
                 </div>
 
             </div>
 
         </header>
-        <img class="clouds" src="images/clouds.png">
-        <img class="clouds2" src="images/clouds.png">
-        <img class="pipe" id="pipe" src="images/pipe.png">
-        <img class="pipe2" id="pipe2" src="images/pipe.png">
-        <img class="bullet" id="bullet" src="images/bullet.png">
-        <img class="bullet2" id="bullet2" src="images/bullet.png">
-        <img src="images/moeda.png" class="moeda moeda1" id="moeda">
-        <img src="images/moeda.png" class="moeda moeda2" id="moeda">
-        <img src="images/moeda.png" class="moeda moeda3" id="moeda">
-        <img class="mario" id="mario" src="images/mario.gif">
+        <img src="images/clouds.png" class="clouds">
+        <img src="images/clouds.png" class="clouds2">
+        <img src="images/pipe.png" class="pipe" id="imgPipe">
+        <img src="images/bullet.png" class="bullet" id="imgBullet">
+        <img src="images/bullet.png" class="bullet2" id="imgBullet2">
+        <img src="images/moeda.png" class="moeda moeda1" id="imgMoeda">
+        <img src="images/moeda.png" class="moeda moeda2" id="imgMoeda">
+        <img src="images/moeda.png" class="moeda moeda3" id="imgMoeda">
+        <img src="images/mario.gif" class="mario" id="imgMario">
+        <img src="images/estrela.png" class="estrela estrela1" id="imgEstrela">
+        <img src="images/estrela.png" class="estrela estrela2" id="imgEstrela">
         <!-- <img class="mario-agachado" src="images/mario-agachado.png"> -->
 
         <div class="sleep" id="divSleep">
-            <span id="txtSleep">3</span>
+
+            <div class="contagem">
+                <span id="txtSleep">5</span>
+            </div>
+
+            <div class="regra-jogo">
+                <div class="bloco-regras">
+                    <img src="images/mario.gif">
+                    <span>Use a tecla <span class="azul">Arrow Up</span> para Pular</span>
+                    <img src="images/teclado.png" alt="">
+                </div>
+                <div class="bloco-regras">
+                    <img src="images/mario-agachado.png" style="padding: 20px;">
+                    <span>Use o <span class="vermelho">Arrow Down</span> para Abaixar</span>
+                    <img src="images/teclado.png" alt="">
+                </div>
+                <div class="bloco-regras">
+                    <img src="images/mario-voando.png">
+                    <span>Use o <span class="verde">Space</span> para Voar</span>
+                    <img src="images/teclado.png" alt="">
+                </div>
+            </div>
         </div>
     </main>
 
@@ -65,10 +95,12 @@
             <h1 class="titulo"><span class="azul">Pronto</span> <span class="amarelo">para</span> <span
                     class="vermelho">um</span> <span class="verde">novo</span> <span class="azul">desafio?</span></h1>
 
-            <input type="text" class="input-jogador" id="inputJogador" placeholder="Jogador...">
+            <input type="text" class="input-jogador" id="inputJogador" placeholder="Jogador..." onfocus="true">
             <button class="btn-modal btn-red-tr btn-start" id="btnStart" disabled>Iniciar Jogo!</button>
             <p class="regra">Use a tecla <span class="vermelho">"Arrow Up"</span>, <span class="verde">"Arrow
                     Down"</span> ou <span class="azul">"Space"</span> do teclado para se desviar dos obstaculos!</p>
+            <p class="credito">Desenvolvido por <a href="https://github.com/darlanaraujo" target="_blank"
+                    class="link">Darlan Araujo</a><i class="fab fa-github"></i>Projeto com fins acadêmico</p>
             <img src="images/mario3.png" class="img-mario mario3">
         </div>
 
@@ -96,6 +128,7 @@
                         <td>Posicao</td>
                         <td>Jogador</td>
                         <td>Moedas</td>
+                        <td>Estrelas</td>
                         <td>Tempo</td>
                         <td>Pontuacao</td>
                     </tr>
@@ -110,8 +143,11 @@
                     </tr> -->
                 </table>
             </div>
-            <p class="regra">**Regra: Cada moeda coletada vale por 2 pontos, cada segundo vale por 1 ponto.</p>
+            <p class="regra-pontuacao">**Regra: Cada moeda coletada vale por 2 pontos, cada estrela vale por 5 pontos e cada
+                segundo vale por 1 ponto.</p>
             <button class="btn-modal btn-red-tr btn-reiniciar" id="btnReiniciar">Reiniciar</button>
+            <p class="credito">Desenvolvido por <a href="https://github.com/darlanaraujo" target="_blank"
+                        class="link">Darlan Araujo</a><i class="fab fa-github"></i>Projeto com fins acadêmico.</p>
             <img src="images/mario2.png" class="img-mario mario2">
             <img src="images/mario1.png" class="img-mario mario1">
         </div>
@@ -126,6 +162,8 @@
     <audio src="audio/audio-ranking.wav" id="somRanking"></audio>
     <audio src="audio/audio-velocidade.wav" id="somVelocidade"></audio>
     <audio src="audio/audio-agachado.wav" id="somAgachado"></audio>
+    <audio src="audio/audio-estrela.wav" id="somEstrela"></audio>
+    <audio src="audio/audio-voar.wav" id="somVoar"></audio>
 </body>
 
 </html>
