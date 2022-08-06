@@ -2,7 +2,7 @@
 
 // Paginas e botões
 const btnStart = document.querySelector('#btnStart');
-const btnRanking = document.querySelectorAll('#btnRanking');
+const btnRanking = document.querySelector('#btnRanking');
 const btnReiniciar = document.querySelectorAll('#btnReiniciar');
 const modal = document.querySelector('#modal');
 const modalStart = document.querySelector('#modalStart');
@@ -56,14 +56,62 @@ const getBanco = () => {
     return JSON.parse(localStorage.getItem('bd-mario')) ?? [];
 }
 
-// Funções ================================================
+// ==================== FUNÇÕES QUE CONTROLAM O JOGO ====================
+// ======================================================================
 
-// Função que inicia o jogo;
+/** Função que valida o jogador
+ * Essa função verifica se o jogador colocou pelo menos 3 caracteres na caixa de texto.
+ * O botão que inicia o jogo, só é habilitado com essa condição.
+ * Com a condição valida, ele pode acessar usando a tecla Enter ou o click do mouse.
+ * A variável nomeJogador recebe o nome digitado na caixa de texto.
+ * @param {*} param0 O parametro recebe o target que vem da caixa de texto e mostra o que foi digitado.
+ */
+const validaJogador = ({ target }) => {
+
+    if (target.value.length > 2) {
+        // Habilita o botão
+        btnStart.removeAttribute('disabled')
+
+        // Acesso pelo click do mouse. Chama a função que inicia o jogo.
+        btnStart.addEventListener('click', start);
+
+        // Acesso pelo enter do teclado
+        window.addEventListener('keypress', ({ key }) => {
+            if (key === 'Enter') {
+                // Chama a função que inicia o jogo.
+                start();
+            }
+        })
+
+        // Pega o nome do jogador
+        nomeJogador = target.value.trim().toUpperCase();
+
+    } else {
+        // Desabilita o botão
+        btnStart.setAttribute('disabled', '');
+    }
+}; // Chamada da função;
+inputJogador.addEventListener('input', validaJogador);
+
+// Função que limpa a caixa de texto;
+const limpaTexto = () => {
+    inputJogador.value = '';
+};
+
+
+/** Função que inicia o movimento do jogo;
+ * Essa função desabilita a tela de modal e oculta todos os seus elementos e remove a classe active da tela de inicio, para que ela não seja carregada quando as outras telas forem chamadas (ranking e game-over).
+ * Depois da contagem de 5 segundos ela habilita os movimentos dos elementos na tela, inicia a contagem do tempo e habilita as ações do teclado para controle do Mario.
+ */
 const start = () => {
+    // Oculta o modal e a tela escura;
     modal.classList.add('desabilitar');
+    // Oculta a tela de inicio;
     modalStart.classList.remove('active');
+    // Adiciona o nome do jogador na tela do jogo;
     txtJogador.innerHTML = nomeJogador;
-
+    
+    // Adiciona a contagem regressiva na tela com um loop de 1s para cada numero;
     divSleep.classList.add('active');
     setInterval(() => {
         let cont = +txtSleep.innerHTML;
@@ -75,135 +123,72 @@ const start = () => {
         }
     }, 1000);
 
-
+    // Chama a função que limpa o texto do input para a proxima partida;
     limpaTexto();
 
+    // Para o som da abertura e habilita o som principal do jogo;
     stopSom('somAbertura');
     playSom('somPrincipal');
 
-    // Eventos
-    document.addEventListener('keydown', pulo);
-    document.addEventListener('keydown', abaixar);
-    document.addEventListener('keyup', levantar);
-
-    // Função que retarta o inicio do jogo em 3s.
+    // Função que retarta o inicio do jogo em 5s.
     setInterval(() => {
-        divSleep.classList.remove('active');
-        cenario.classList.add('start');
-        // Inicia a contagem do tempo.
-        time();
-        moverElementos(imgPipe);
-        moverElementos(imgBullet, 1);
+        divSleep.classList.remove('active'); // Oculta o contador regressivo;
+        cenario.classList.add('start'); // Habilita os movimentos das nuvens, moedas e estrelas;
+        
+        time(); // Inicia a contagem do tempo.
+
+        // Função que movimenta os elementos que vão ter niveis de velocidade diferentes a cada tempo determinado;
+        moverElementos(imgPipe); // Movimenta o tupo;
+        moverElementos(imgBullet, 1); // Movimenta a bala;
     }, 5000);
 
 };
 
-// Função que valida se o jogador preencheu o nome com pelo menos 3 caracteres;
-const validaJogador = ({ target }) => {
+/** Loop que verifica se o jogador perdeu;
+ * Essa função é o controle de toda ação do jogo. Ela é um loop que ocorre a cada 10ms verificando a condição e habilitando as funções e variáveis dentro dela.
+ * Ela controla se algum elemento encostou no Mario fazendo com que o jogo acabe, chamando a tela de game-over;
+ */
+const loopDoJogo = setInterval(() => {
 
-    if (target.value.length > 2) {
-        btnStart.removeAttribute('disabled')
+    // Variaveis que pegam a posição do elemento na tela
+    const pipePosition = imgPipe.offsetLeft; // Pega a distancia da margin esquerda;
+    const bulletPosition = imgBullet.offsetLeft; // Pega a distancia da margin esquerda;
+    const marioAltura = imgMario.offsetHeight; // Pega a distancia da altura
+    
+    // Essa variável pega o movimento do Mario em relação ao bottom, depois retira o caractere px e converte o texto para numero;
+    const marioPosition = +window.getComputedStyle(imgMario).bottom.replace('px', ''); // Posição em relação ao bottom da tela;
 
-        // Acesso pelo click do mouse
-        btnStart.addEventListener('click', start);
 
-        // Acesso pelo enter do teclado
-        window.addEventListener('keypress', ({ key }) => {
-            if (key === 'Enter') {
-                start();
-            }
-        })
-
-        // Pega o nome do jogador
-        nomeJogador = target.value.trim().toUpperCase();
-
-    } else {
-        btnStart.setAttribute('disabled', '');
-    }
-};
-inputJogador.addEventListener('input', validaJogador);
-
-// Função que limpa a caixa de texto;
-const limpaTexto = () => {
-    inputJogador.value = '';
-};
-
-// Função que faz o Mario pular;
-const pulo = (event) => {
-    if (event.key === 'ArrowUp') {
-        imgMario.classList.add('pulo');
-        playSom('somPulo');
-
-        setTimeout(() => {
-            imgMario.classList.remove('pulo');
-        }, 500);
-    }
-};
-
-// Função que faz o Mario voar;
-const voar = (event) => {
-    if (event.key === ' ') {
-        imgMario.classList.add('voar');
-        imgMario.src = 'images/mario-voando.png'
-        playSom('somVoar');
-
-        setTimeout(() => {
-            imgMario.classList.remove('voar');
-            imgMario.src = 'images/mario.gif';
-        }, 1500);
-    }
-};
-document.addEventListener('keydown', voar);
-
-// Função que faz o Mario abaixar;
-const abaixar = (event) => {
-    if (event.key === 'ArrowDown') {
-        imgMario.src = 'images/mario-agachado.png';
-        imgMario.classList.add('mario-agachado');
-        playSom('somAgachado');
-    }
-}
-
-// Função que faz o Mario levantar;
-const levantar = (event) => {
-    if (event.key === 'ArrowDown') {
-        imgMario.src = 'images/mario.gif';
-        imgMario.classList.remove('mario-agachado');
-    }
-}
-
-// Loop que verifica se o jogador perdeu
-const loop = setInterval(() => {
-
-    const pipePosition = imgPipe.offsetLeft;
-    const bulletPosition = imgBullet.offsetLeft;
-    const marioPosition = +window.getComputedStyle(imgMario).bottom.replace('px', '');
-    const marioAltura = imgMario.offsetHeight;
-
+    /** Essa condição faz a verificação se o Mario está encostando nos elementos (tubo ou bala);
+     * Se o left do tubo estiver entre 0 e 120 do canto esquerdo da tela e a altura do bottom do Mario for menor que 120 (altura do tubo) = Mario encostou no tubo.
+     * Ou - Se o left da bala estiver entre 0 e 120 do canto esquerdo da tela e a altura do bottom do Mario for menor que 120 ou se a altura do Mario for maior que 70 (altura do tubo) = Mario encostou na bala.
+     */
     if (pipePosition <= 120 && pipePosition > 0 && marioPosition < 120 || bulletPosition <= 120 && bulletPosition > 0 && marioAltura > 70 && marioPosition < 120) {
         stopSom('somPrincipal');
         // Pipe 1
-        imgPipe.style.animation = 'none';
-        imgPipe.style.left = `${pipePosition}px`;
+        imgPipe.style.animation = 'none'; // Para a animação do tubo;
+        imgPipe.style.left = `${pipePosition}px`; // Para o tupo na posição que bateu no Mario;
 
         // Bullet
-        imgBullet.style.animation = 'none';
-        imgBullet.style.left = `${bulletPosition}px`;
+        imgBullet.style.animation = 'none'; // Para a animação da bala;
+        imgBullet.style.left = `${bulletPosition}px`; // Para o bala na posição que bateu no Mario;
 
         // Mario
-        imgMario.style.animation = 'none';
-        imgMario.style.bottom = `${marioPosition}px`
+        imgMario.style.animation = 'none'; // Para a animação do pulo, voo ou abaixar;
+        imgMario.style.bottom = `${marioPosition}px` // Para o Mario na posição que bateu no elemento;
 
         // Muda a imagem e estilo;
-        imgMario.src = 'images/game-over.png'
-        imgMario.classList.add('game-over');
+        imgMario.src = 'images/game-over.png' // Imagem de quando o Mario bate em algo;
+        imgMario.classList.add('game-over'); // Classe que diminui o tamanho da img;
+
+        // Habilita o som
         playSom('somPerdeu');
 
         // Encerra o loop, pontuação e tempo do jogo;
-        clearInterval(loop);
-        clearInterval(pegaMoedas);
-        clearInterval(this.loopTime);
-        clearInterval(this.loopElementos);
+        clearInterval(loopDoJogo); // Essa propria função;
+        clearInterval(pegaElementos); // Loop que faz a contagem das moedas e estrelas
+        clearInterval(this.loopTime); // Loop do tempo do jogo;
+        clearInterval(this.loopElementos); // Loop que controla a velocidade do jogo;
 
         // Função que vai calcular os pontos do jogador;
         calculoPontuacao();
@@ -212,12 +197,15 @@ const loop = setInterval(() => {
         bancoTemp(nomeJogador, moedasJogador, estrelasJogador, tempoJogador, pontuacaoJogador);
 
         // Mostra a tela de game over;
-        modal.classList.remove('desabilitar');
-        modalGameOver.classList.add('active');
+        modal.classList.remove('desabilitar'); // Habilita o modal e o fundo preto;
+        modalGameOver.classList.add('active'); // Habilita a tela de game-over no modal;
     }
 }, 10);
 
-// Função que reinicia a partida;
+/** Função que reinicia a partida
+ * Ela habilita o som da abertura e usa um metodo nativo para dar um reload no navegador.
+ * Como são dois botões de baixo dela o evento de click é feito com um forEach.
+ */
 const reiniciar = () => {
     playSom('somAbertura');
     location.reload();
@@ -226,56 +214,153 @@ btnReiniciar.forEach((btn) => {
     btn.addEventListener('click', reiniciar);
 });
 
-// Função que mostra o Ranking
+/** Função que mostra o Ranking
+ * Ela remove a tela de game-over do modal e chama a tela do ranking para o lugar.
+ * Habilita o som dessa tela, e chama a função que constroe as tabelas com os dados armazenados no BD.
+ */
 const ranking = () => {
-    modalGameOver.classList.remove('active');
-    modalRanking.classList.add('active');
-    playSom('somRanking');
+    modalGameOver.classList.remove('active'); // Remove a tela game-over;
+    modalRanking.classList.add('active'); // Habilita a tela de ranking;
+    
+    playSom('somRanking'); // Habilita o som;
 
-    tabelaRanking();
+    tabelaRanking(); // Chama a função que monta a tabela na tela;
 };
-btnRanking.forEach((btn) => {
-    btn.addEventListener('click', ranking);
-});
+btnRanking.addEventListener('click', ranking);
 
-// Função que conta o tempo do jogo;
+
+// ==================== FUNÇÕES QUE CONTROLAM O MARIO ====================
+// =======================================================================
+
+/** Função que faz o Mario pular;
+ * Essa função verifica a tecla usada pelo jogador, e compara se ela é a mesma que faz o Mario pular.
+ * @param {*} event Parametro que vem do teclado mostrando a tecla pressionada;
+ */
+const pulo = (event) => {
+    if (event.key === 'ArrowUp') {
+        // Adiciona a classe que contem a animação que faz o Mario pular;
+        imgMario.classList.add('pulo');
+
+        // Habilita o som do pulo
+        playSom('somPulo');
+
+        // Metodo de tempo que após 500ms remove a classe com a animação do pulo;
+        setTimeout(() => {
+            imgMario.classList.remove('pulo');
+        }, 500);
+    }
+};
+document.addEventListener('keydown', pulo);
+
+/** Função que faz o Mario voar;
+ * Essa função verifica a tecla usada pelo jogador, e compara se ela é a mesma que faz o Mario voar.
+ * @param {*} event Parametro que vem do teclado mostrando a tecla pressionada;
+ */
+const voar = (event) => {
+    if (event.key === ' ') {
+        imgMario.classList.add('voar'); // Adiciona a classe que contem a animação que faz o Mario pular;
+        imgMario.src = 'images/mario-voando.png' // Muda a imagem do Mario
+
+        // Habilita o som do voo;
+        playSom('somVoar');
+
+        // Metodo de tempo que após 1500ms remove a classe com a animação do voo e volta a imagem principal do Mario;
+        setTimeout(() => {
+            imgMario.classList.remove('voar');
+            imgMario.src = 'images/mario.gif';
+        }, 1500);
+    }
+};
+document.addEventListener('keydown', voar);
+
+/** Função que faz o Mario abaixar;
+ * Essa função verifica a tecla usada pelo jogador, e compara se ela é a mesma que faz o Mario abaixar.
+ * Essa função diferente das outras não retorna a imagem do Mario nem remove a classe da animação depois de alguns segundos. Ela só é invalidada quando o jogador deixa de pressionara a tecla Arrow Down que nesse momento habilita outra função (levantar).
+ * @param {*} event Parametro que vem do teclado mostrando a tecla pressionada;
+ */
+const abaixar = (event) => {
+    if (event.key === 'ArrowDown') {
+        imgMario.classList.add('mario-agachado'); // Adiciona a classe que contem a animação que faz o Mario abaixar;
+        imgMario.src = 'images/mario-agachado.png'; // Muda a imagem do Mario
+
+        // Habilita o som
+        playSom('somAgachado');
+    }
+}
+document.addEventListener('keydown', abaixar);
+
+/** Função que faz o Mario levantar;
+ * Essa função complementa a função abaixar, pois ao soltar a tecla Arrow Down ela devolve a imagem principal do Mario e remove a classe que contem a animação que abaixa.
+ * Isso foi necessário para que o jogador pudesse ficar o tempo necessário abaixado para desviar das balas que se movem em uma velocidade que muda com o tempo. 
+ * @param {*} event Parametro que vem do teclado mostrando a tecla que deixou de ser pressionada;
+ */
+const levantar = (event) => {
+    if (event.key === 'ArrowDown') {
+        imgMario.src = 'images/mario.gif';
+        imgMario.classList.remove('mario-agachado');
+    }
+}
+document.addEventListener('keyup', levantar);
+
+
+// ============= FUNÇÕES QUE CONTROLAM OS ELEMENTOS DA TELA =============
+// ======================================================================
+
+/** Função que conta o tempo do jogo;
+ * Essa função contem um setInterval dentro dela que permite fazer um loop a cada 1000ms e a cada volta ele adiciona +1 na variavel do tempo do jogador e depois mostra esse tempo na tela;
+ * Ela teve que ser feita assim para que pudesse chamar essa função apenas quando a função start for iniciada, caso contrário o tempo começaria a conta ao carregar a tela no navegador.
+ * Foi preciso criar o elemento this.loopTime para que pudesse ser interrompido com o método clearInterval dentro da função de loop
+ */
 const time = () => {
     this.loopTime = setInterval(() => {
+        // Variavel local que recebe o valor que está na tela;
         const tempoAtual = +txtTempo.innerHTML;
+
+        // Para uma melhor consistencia do loop coloquei um setTimeout de 500ms pois sem ele algumas vezes o valor na tela pulava de 2 em 2.
         setTimeout(() => {
             tempoJogador = tempoAtual + 1; // Pega o tempo do jogador
-            txtTempo.innerHTML = tempoJogador;
+            txtTempo.innerHTML = tempoJogador; // Mostra esse tempo na tela;
         }, 500);
     }, 1000);
 
 }
 
-// Função que conta os pontos do jogador
-const pegaMoedas = setInterval(() => {
-    const marioPosition = +window.getComputedStyle(imgMario).bottom.replace('px', '');
-    const marioPositionTop = +window.getComputedStyle(imgMario).top.replace('px', '');
-    const marioPositionleft = +window.getComputedStyle(imgMario).left.replace('px', '');
+/** Função que pega os elementos da tela (moedas e estrelas)
+ * Essa função usa o setInterval para criar o loop a cada 250ms que fica verificando se o Mario encostou em algum elemento que conta pontos no jogo (moedas e estrelas).
+ * Dentro da função é feito dois forEach, sendo uma para as moedas que tem 3 no jogo, e um forEach para as estrelas que tem 2 no jogo. Foi feito dessa forma para que pudessem passar em posições e/ou velocidades diferentes.
+ */
+const pegaElementos = setInterval(() => {
+    // Essa variável pega o movimento do Mario em relação ao bottom, top, left e depois retira o caractere px e converte o texto para numero;
+    const marioPosition = +window.getComputedStyle(imgMario).bottom.replace('px', ''); // Posição em relação ao bottom da tela;
+    const marioPositionTop = +window.getComputedStyle(imgMario).top.replace('px', ''); // Posição em relação ao top da tela;
 
+    // Condição que pega as moedas;
     imgMoedas.forEach((moeda, index) => {
+        // Posição que a moeda está na tela;
         const moedaPosition = moeda.offsetLeft;
 
+        // Se o left da moeda for menor ou igual a 150 (posição em que o Mario fica) e se o Mario estiver a uma altura maior ou igual a de 150 (altura em relação ao bottom da tela) = Ele pegoua moeda.
         if (moedaPosition <= 150 && marioPosition >= 150) {
-            moedasJogador++; // Pega as moedas do jogador;
-            txtMoedas.innerHTML = moedasJogador;
+            moedasJogador++; // adiciona +1 a variavel global;
+            txtMoedas.innerHTML = moedasJogador; // Mostra a soma da variável na tela;
 
+            // Habilita o som
             playSom('somMoeda');
 
-            moeda.style.display = 'none'; // apaga a moeda
+            moeda.style.display = 'none'; // Remove a moeda da tela;
 
+            // Depois de 50ms a imagem da moeda volta para a tela;
             setInterval(() => {
                 moeda.style.display = 'block'; // mostra a moeda novamente depois de 50ms
             }, 50);
         }
     });
 
+    // O mesmo proncipio da moeda vale para a estrela;
     imgEstrelas.forEach((estrela, index) => {
-        const estrelaPositionTop = +window.getComputedStyle(imgEstrelas[index]).top.replace('px', '');
-        const estrelaPositionLeft = +window.getComputedStyle(imgEstrelas[index]).left.replace('px', '');
+        const estrelaPositionTop = +window.getComputedStyle(imgEstrelas[index]).top.replace('px', ''); // Posição em relação ao top da tela;
+        const estrelaPositionLeft = +window.getComputedStyle(imgEstrelas[index]).left.replace('px', ''); // Posição em relação ao left da tela;
+
 
         if (marioPositionTop <= estrelaPositionTop && estrelaPositionLeft <= 250 && estrelaPositionLeft >= 200) {
             estrelasJogador ++;
@@ -292,6 +377,19 @@ const pegaMoedas = setInterval(() => {
     });
 
 }, 250);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Função que calcula a pontuação do jogador;
 const calculoPontuacao = () => {
